@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>미션 상세 · QA Playground</title>
+  <link rel="stylesheet" href="./css/style.css" />
+</head>
+<body class="page-site">
+  <header class="site-header site-header--simple">
+    <div class="site-header-inner">
+      <a class="site-logo" href="./index.html">QA Playground</a>
+      <span id="authNavSlot" class="site-auth-nav"></span>
+    </div>
+  </header>
+
+  <main class="site-main site-main-narrow">
+    <div class="site-container">
+      <nav class="breadcrumb" aria-label="경로">
+        <a href="./index.html">미션</a>
+        <span class="breadcrumb-sep">/</span>
+        <span id="bcTitle">—</span>
+      </nav>
+
+      <article id="featureHubRoot" class="detail-card" hidden>
+        <header class="detail-head">
+          <div class="detail-badges">
+            <span class="site-badge is-muted">기능 묶음</span>
+          </div>
+          <h1 id="hubTitle" class="detail-title">—</h1>
+          <p id="hubSummary" class="detail-summary">—</p>
+        </header>
+        <div id="hubIntro" class="detail-body"></div>
+        <section class="detail-section">
+          <h2 class="detail-h2">포함된 미션</h2>
+          <ul id="featureHubList" class="feature-hub-list"></ul>
+        </section>
+      </article>
+
+      <article id="missionDetailRoot" class="detail-card">
+        <p id="detailParentNav" class="detail-parent-nav" hidden>
+          <a id="linkBackHub" class="inline-link" href="./index.html"></a>
+        </p>
+        <header class="detail-head">
+          <div class="detail-badges">
+            <span id="missionType" class="site-badge">—</span>
+            <span id="missionDifficulty" class="site-badge is-muted">—</span>
+            <span id="missionPoints" class="site-badge is-point">—</span>
+            <span id="doneBadge" class="site-badge is-done" hidden>완료</span>
+          </div>
+          <h1 id="missionTitle" class="detail-title">—</h1>
+          <p id="missionSummary" class="detail-summary">—</p>
+        </header>
+
+        <div id="preqNotice" class="detail-alert" hidden></div>
+
+        <div id="missionDescription" class="detail-body"></div>
+
+        <section class="detail-section">
+          <h2 class="detail-h2">이 미션에서 할 일</h2>
+          <ul id="objectivePreview" class="detail-objectives"></ul>
+        </section>
+
+        <div class="detail-cta">
+          <p id="loginGate" class="detail-gate" hidden>
+            미션을 <strong>수행</strong>하려면 로그인이 필요합니다.
+            <a class="inline-link" id="linkLoginGate" href="./login.html">로그인</a>
+            ·
+            <a class="inline-link" id="linkSignupGate" href="./signup.html">회원가입</a>
+          </p>
+          <a id="btnStart" class="btn-site-primary" href="#">미션 수행하기</a>
+        </div>
+      </article>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <p>QA Playground</p>
+  </footer>
+
+  <script defer src="./js/core/storage.js"></script>
+  <script defer src="./js/missions.js"></script>
+  <script defer src="./js/ui/prereq-dialog.js"></script>
+  <script defer src="./js/ui/profile-avatar.js"></script>
+  <script defer src="./js/ui/auth-nav.js"></script>
+  <script defer src="./js/pages/mission-detail.js"></script>
+</body>
+</html>

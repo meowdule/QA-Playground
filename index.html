@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>QA Playground — 미션</title>
+  <link rel="stylesheet" href="./css/style.css" />
+</head>
+<body class="page-site">
+  <header class="site-header site-header--simple">
+    <div class="site-header-inner">
+      <a class="site-logo" href="./index.html">QA Playground</a>
+      <span id="authNavSlot" class="site-auth-nav"></span>
+    </div>
+  </header>
+
+  <section class="site-hero">
+    <div class="site-hero-inner">
+      <h1 class="site-hero-title">실습 미션</h1>
+      <p class="site-hero-desc">
+        모든 연습은 <strong>시나리오 기능 묶음</strong>으로 나뉩니다. 같은 화면·도메인(문의, 신청, 플랜, 가입, 로그인, 게시판 등)을 두고 목표만 다른 미션을 고릅니다.
+      </p>
+      <div class="site-hero-meta" id="heroStats">
+        <span class="site-hero-stat"><em id="statCleared">—</em> 클리어</span>
+        <span class="site-hero-stat"><em id="statPoints">—</em> 점수</span>
+      </div>
+    </div>
+  </section>
+
+  <main class="site-main">
+    <div class="site-container">
+      <div class="site-section-head">
+        <h2 class="site-section-title">시나리오 기능 묶음 <span class="site-count" id="missionCount">0</span></h2>
+        <p class="site-section-desc">
+          레퍼런스: <a href="https://meowdule.github.io/SEO-TESTING-HTML/" target="_blank" rel="noopener noreferrer">SEO DEMO</a>
+        </p>
+      </div>
+      <div id="missionGrid" class="course-grid"></div>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <p>QA Playground · 로컬 브라우저에만 진행이 저장됩니다.</p>
+  </footer>
+
+  <script defer src="./js/core/storage.js"></script>
+  <script defer src="./js/missions.js"></script>
+  <script defer src="./js/ui/profile-avatar.js"></script>
+  <script defer src="./js/ui/auth-nav.js"></script>
+  <script defer src="./js/pages/home.js"></script>
+</body>
+</html>

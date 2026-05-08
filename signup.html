@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>회원가입 · QA Playground</title>
+  <link rel="stylesheet" href="./css/style.css" />
+</head>
+<body class="page-site">
+  <header class="site-header site-header--auth-only">
+    <div class="site-header-inner site-header-inner--center">
+      <a class="site-logo" href="./index.html">QA Playground</a>
+    </div>
+  </header>
+
+  <main class="site-main site-main-auth">
+    <div class="auth-shell">
+      <h1 class="auth-title">회원가입</h1>
+      <p class="auth-sub muted">진행도는 이 브라우저에만 저장됩니다.</p>
+      <form id="formSignup" class="auth-form-site">
+        <label class="auth-label">이메일
+          <input name="email" type="email" autocomplete="username" required class="auth-input" />
+        </label>
+        <label class="auth-label">비밀번호 (6자 이상)
+          <input name="password" type="password" autocomplete="new-password" minlength="6" required class="auth-input" />
+        </label>
+        <label class="auth-label">표시 이름
+          <input name="displayName" type="text" maxlength="24" required class="auth-input" />
+        </label>
+        <button type="submit" class="btn-site-primary btn-site-block">가입하기</button>
+      </form>
+      <p class="auth-footer-link">
+        이미 계정이 있나요? <a id="linkLogin" href="./login.html">로그인</a>
+      </p>
+    </div>
+  </main>
+
+  <script defer src="./js/core/storage.js"></script>
+  <script defer src="./js/pages/signup.js"></script>
+</body>
+</html>

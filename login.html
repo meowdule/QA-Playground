@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>로그인 · QA Playground</title>
+  <link rel="stylesheet" href="./css/style.css" />
+</head>
+<body class="page-site">
+  <header class="site-header site-header--auth-only">
+    <div class="site-header-inner site-header-inner--center">
+      <a class="site-logo" href="./index.html">QA Playground</a>
+    </div>
+  </header>
+
+  <main class="site-main site-main-auth">
+    <div class="auth-shell">
+      <h1 class="auth-title">로그인</h1>
+      <p id="nextHint" class="auth-sub muted" hidden></p>
+      <form id="formLogin" class="auth-form-site">
+        <label class="auth-label">이메일
+          <input name="email" type="email" autocomplete="username" required class="auth-input" />
+        </label>
+        <label class="auth-label">비밀번호
+          <input name="password" type="password" autocomplete="current-password" required class="auth-input" />
+        </label>
+        <button type="submit" class="btn-site-primary btn-site-block">로그인</button>
+      </form>
+      <p class="auth-footer-link">
+        계정이 없으신가요? <a id="linkSignup" href="./signup.html">회원가입</a>
+      </p>
+    </div>
+  </main>
+
+  <script defer src="./js/core/storage.js"></script>
+  <script defer src="./js/pages/login.js"></script>
+</body>
+</html>

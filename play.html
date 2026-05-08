@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>QA Playground — 플레이</title>
+  <link rel="stylesheet" href="./css/style.css" />
+</head>
+<body class="page-play">
+  <header class="topbar slim topbar--minimal">
+    <div class="brand">
+      <a id="backHome" class="topbar-back" href="./index.html">← 미션 목록</a>
+    </div>
+    <div id="playAuthNav" class="topbar-auth"></div>
+  </header>
+
+  <main class="game-layout container-wide">
+    <aside class="mission-panel card">
+      <div class="mission-head">
+        <h2 id="missionTitle">—</h2>
+        <span id="missionDifficulty" class="pill">—</span>
+      </div>
+      <span id="missionType" class="pill type-badge">—</span>
+      <p id="missionSummary" class="mission-brief"></p>
+      <div id="missionDescription" class="mission-desc"></div>
+
+      <h3 class="subheading">목표</h3>
+      <ul id="objectiveList" class="objective-list"></ul>
+
+      <button type="button" id="completeMissionBtn" class="btn full complete-mission-btn" disabled>
+        미션 완료 · 목록으로
+      </button>
+
+      <div class="activity-log-head">
+        <h3 class="subheading activity-log-title">활동 로그</h3>
+        <button type="button" id="activityClearBtn" class="btn ghost btn-compact">
+          로그 초기화
+        </button>
+      </div>
+      <ul id="activityLog" class="activity-log"></ul>
+    </aside>
+
+    <section class="sandbox-column">
+      <div class="sandbox-toolbar card">
+        <span class="sandbox-label">테스트 대상</span>
+      </div>
+      <div id="sandboxMount" class="sandbox-root card"></div>
+    </section>
+  </main>
+
+  <div id="reportBackdrop" class="report-backdrop" hidden aria-hidden="true"></div>
+  <div
+    id="reportWidget"
+    class="report-widget"
+    hidden
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="reportWidgetTitle"
+  >
+    <div class="report-widget-panel card">
+      <header class="report-widget-header">
+        <div class="report-widget-heading">
+          <span class="report-widget-avatar" aria-hidden="true">?</span>
+          <div>
+            <h2 id="reportWidgetTitle" class="report-widget-title">제보 도우미</h2>
+            <p class="report-widget-sub">문의하기처럼 내용을 남겨 주세요. 이 기기 브라우저에만 저장됩니다.</p>
+          </div>
+        </div>
+        <button type="button" id="reportWidgetClose" class="report-widget-close" aria-label="닫기">
+          ×
+        </button>
+      </header>
+      <div class="report-widget-body">
+        <p id="reportHint" class="muted small report-widget-hint"></p>
+        <form id="reportForm">
+          <label class="sr-only" for="reportCategory">유형</label>
+          <select name="category" id="reportCategory">
+            <option value="bug">버그·오동작</option>
+            <option value="feedback">개선·문의</option>
+          </select>
+          <label class="sr-only" for="reportMessage">내용</label>
+          <textarea name="message" id="reportMessage" rows="4" placeholder="재현 단계, 기대 결과, 실제 결과 등" required></textarea>
+          <button type="submit" class="btn ghost full">로컬에 저장</button>
+        </form>
+        <p id="reportToast" class="toast-msg" hidden>저장했습니다. (이 PC 브라우저에만 쌓입니다)</p>
+      </div>
+    </div>
+  </div>
+  <button type="button" id="reportFab" class="report-fab" aria-label="제보 도우미 열기" aria-expanded="false" aria-controls="reportWidget">
+    ?
+  </button>
+
+  <script defer src="./js/core/storage.js"></script>
+  <script defer src="./js/missions.js"></script>
+  <script defer src="./js/core/checks.js"></script>
+  <script defer src="./js/ui/prereq-dialog.js"></script>
+  <script defer src="./js/ui/profile-avatar.js"></script>
+  <script defer src="./js/ui/auth-nav.js"></script>
+  <script defer src="./js/sandbox.js"></script>
+  <script defer src="./js/pages/play.js"></script>
+</body>
+</html>
