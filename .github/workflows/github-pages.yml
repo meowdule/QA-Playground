@@ -1,4 +1,6 @@
 # GitHub Pages — 공식 static 템플릿과 동일한 권한·동시성·액션 버전에 맞춤.
+# github-pages 환경 보호 규칙이 "main만 배포 허용"이면 demo-generator 푸시는 거절됩니다.
+# 다른 브랜치에서도 자동 배포하려면: Settings → Environments → github-pages → Deployment branches 에서 허용.
 # 실패 시 Actions 로그에서 "Resource not accessible"이면 저장소 Settings → Actions → General
 # 에서 Workflow permissions가 "Read and write"인지, Pages가 GitHub Actions 소스인지 확인.
 name: Deploy GitHub Pages
@@ -7,7 +9,6 @@ on:
   push:
     branches:
       - main
-      - demo-generator
   workflow_dispatch:
 
 permissions:
