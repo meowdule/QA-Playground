@@ -2,6 +2,20 @@ window.QA = window.QA || {};
 
 const STORAGE_KEY = "qa_playground_app_v4";
 const REPORTS_KEY = "qa_playground_reports_v3";
+const ADMIN_SESSION_KEY = "qa_playground_admin_session_v1";
+const SCENARIO_DRAFTS_KEY = "qa_playground_scenario_drafts_v1";
+const ADMIN_ACCOUNT = {
+  email: "admin@qa.playground",
+  password: "admin1234!",
+  displayName: "관리자"
+};
+
+/** GitHub Pages 등 공개 데모용 고정 일반 계정(클라이언트 전용, 비밀 아님) */
+const DEMO_USER_ACCOUNT = {
+  email: "demo@qa.playground",
+  password: "demo1234!",
+  displayName: "데모 사용자"
+};
 
 function safeParse(json, fallback) {
   try {
@@ -58,6 +72,9 @@ function registerUser(email, password, displayName) {
     throw new Error("표시 이름(닉네임)을 입력해 주세요.");
   }
   const data = loadAppData();
+  if (e === ADMIN_ACCOUNT.email || e === DEMO_USER_ACCOUNT.email) {
+    throw new Error("이 이메일은 데모 전용입니다. 로그인 화면의 안내를 참고해 주세요.");
+  }
   if (data.users[e]) {
     throw new Error("이미 가입된 이메일입니다. 로그인해 주세요.");
   }
@@ -70,6 +87,26 @@ function registerUser(email, password, displayName) {
 
 function loginUser(email, password) {
   const e = normalizeEmail(email);
+  if (e === ADMIN_ACCOUNT.email && String(password || "") === ADMIN_ACCOUNT.password) {
+    loginAdmin(e, password);
+    const adminData = loadAppData();
+    adminData.sessionEmail = ADMIN_ACCOUNT.email;
+    saveAppData(adminData);
+    return { email: ADMIN_ACCOUNT.email, displayName: ADMIN_ACCOUNT.displayName };
+  }
+  if (e === DEMO_USER_ACCOUNT.email && String(password || "") === DEMO_USER_ACCOUNT.password) {
+    logoutAdmin();
+    const data = loadAppData();
+    data.users[e] = {
+      displayName: DEMO_USER_ACCOUNT.displayName,
+      password: DEMO_USER_ACCOUNT.password,
+      createdAt: data.users[e]?.createdAt || Date.now()
+    };
+    data.progress[e] = data.progress[e] || defaultProgress();
+    data.sessionEmail = e;
+    saveAppData(data);
+    return { email: e, displayName: DEMO_USER_ACCOUNT.displayName };
+  }
   const data = loadAppData();
   const u = data.users[e];
   if (!u || u.password !== String(password)) {
@@ -84,6 +121,7 @@ function logoutUser() {
   const data = loadAppData();
   data.sessionEmail = null;
   saveAppData(data);
+  logoutAdmin();
 }
 
 function updateUserDisplayName(email, displayName) {
@@ -105,6 +143,9 @@ function updateUserDisplayName(email, displayName) {
 function getSessionUser() {
   const data = loadAppData();
   const e = data.sessionEmail;
+  if (e === ADMIN_ACCOUNT.email && isAdminLoggedIn()) {
+    return { email: ADMIN_ACCOUNT.email, displayName: ADMIN_ACCOUNT.displayName };
+  }
   if (!e || !data.users[e]) return null;
   return { email: e, displayName: data.users[e].displayName };
 }
@@ -156,6 +197,42 @@ function addReport(entry) {
   localStorage.setItem(REPORTS_KEY, JSON.stringify(list.slice(0, 200)));
 }
 
+function loginAdmin(email, password) {
+  const u = normalizeEmail(email);
+  const p = String(password || "");
+  if (u !== ADMIN_ACCOUNT.email || p !== ADMIN_ACCOUNT.password) {
+    throw new Error("관리자 계정 정보가 올바르지 않습니다.");
+  }
+  const session = {
+    email: ADMIN_ACCOUNT.email,
+    displayName: ADMIN_ACCOUNT.displayName,
+    loggedInAt: Date.now()
+  };
+  localStorage.setItem(ADMIN_SESSION_KEY, JSON.stringify(session));
+  return session;
+}
+
+function getAdminSession() {
+  return safeParse(localStorage.getItem(ADMIN_SESSION_KEY), null);
+}
+
+function isAdminLoggedIn() {
+  const s = getAdminSession();
+  return !!(s && s.email === ADMIN_ACCOUNT.email);
+}
+
+function logoutAdmin() {
+  localStorage.removeItem(ADMIN_SESSION_KEY);
+}
+
+function loadScenarioDrafts() {
+  return safeParse(localStorage.getItem(SCENARIO_DRAFTS_KEY), []);
+}
+
+function saveScenarioDrafts(drafts) {
+  localStorage.setItem(SCENARIO_DRAFTS_KEY, JSON.stringify(Array.isArray(drafts) ? drafts : []));
+}
+
 Object.assign(window.QA, {
   loadAppData,
   saveAppData,
@@ -169,6 +246,14 @@ Object.assign(window.QA, {
   markMissionComplete,
   saveSignupIdentity,
   loadReports,
-  addReport
+  addReport,
+  loginAdmin,
+  getAdminSession,
+  isAdminLoggedIn,
+  logoutAdmin,
+  loadScenarioDrafts,
+  saveScenarioDrafts,
+  ADMIN_ACCOUNT,
+  DEMO_USER_ACCOUNT
 });
 
