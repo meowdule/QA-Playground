@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" href="./css/QAPlayground.svg" type="image/svg+xml" sizes="any" />
   <title>QA Playground — 플레이</title>
   <link rel="stylesheet" href="./css/style.css" />
 </head>
@@ -26,6 +27,17 @@
 
       <h3 class="subheading">목표</h3>
       <ul id="objectiveList" class="objective-list"></ul>
+      <div class="learning-progress">
+        <div class="learning-progress-head">
+          <strong id="progressText">진행률 0%</strong>
+          <span id="progressCount" class="muted small">0 / 0</span>
+        </div>
+        <div class="learning-progress-track">
+          <div id="progressFill" class="learning-progress-fill" style="width: 0%"></div>
+        </div>
+      </div>
+      <p id="currentGuide" class="learning-guide muted">다음 목표 안내가 여기에 표시됩니다.</p>
+      <p id="difficultyHint" class="learning-hint muted small"></p>
 
       <button type="button" id="completeMissionBtn" class="btn full complete-mission-btn" disabled>
         미션 완료 · 목록으로
@@ -42,11 +54,59 @@
 
     <section class="sandbox-column">
       <div class="sandbox-toolbar card">
-        <span class="sandbox-label">테스트 대상</span>
+        <span id="sandboxToolbarLabel" class="sandbox-label">연습 데모 · 목표는 아래 화면 동작으로 체크</span>
+        <a
+          class="sandbox-external-ref muted small"
+          href="https://meowdule.github.io/SEO-TESTING-HTML/"
+          target="_blank"
+          rel="noopener noreferrer"
+          >실제 SEO DEMO ↗</a>
+        <span id="validatorStatus" class="site-badge is-muted">검증 서버 미확인</span>
+        <button id="runValidationBtn" type="button" class="btn-site-secondary btn-compact">지금 자동 검증</button>
       </div>
-      <div id="sandboxMount" class="sandbox-root card"></div>
+      <div id="sandboxMount" class="sandbox-root card">
+        <div id="sandboxInteractiveHost" class="sandbox-interactive-host" hidden></div>
+        <iframe
+          id="externalSiteFrame"
+          class="external-site-frame"
+          src="https://meowdule.github.io/SEO-TESTING-HTML/"
+          title="SEO DEMO"
+          loading="eager"
+          referrerpolicy="no-referrer"
+        ></iframe>
+      </div>
     </section>
   </main>
+
+  <button type="button" id="bugTargetLaunchBtn" class="bug-target-launch-btn" hidden>
+    테스트 대상 버그 제보
+  </button>
+
+  <div
+    id="bugTargetModal"
+    class="bug-target-overlay"
+    hidden
+    aria-hidden="true"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="bugTargetModalTitle"
+  >
+    <div class="bug-target-modal-card card">
+      <header class="bug-target-modal-header">
+        <h2 id="bugTargetModalTitle" class="bug-target-modal-title">테스트 대상 버그 제보</h2>
+        <button type="button" id="bugTargetModalClose" class="report-widget-close" aria-label="닫기">×</button>
+      </header>
+      <p class="muted small bug-target-modal-lead">
+        연습 데모에서 재현한 결함만 적습니다. 이 튜토리얼·진행에 대한 의견은 우하단 <strong>?</strong> 제보·의견과는 별도입니다.
+      </p>
+      <form id="bugTargetForm" class="bug-target-form">
+        <label class="sr-only" for="bugTargetMessage">버그 제보 내용</label>
+        <textarea id="bugTargetMessage" name="message" rows="16" required></textarea>
+        <button type="submit" class="btn full">버그 제보를 로컬에 저장</button>
+      </form>
+      <p id="bugTargetToast" class="toast-msg" hidden>저장했습니다. (이 PC 브라우저에만 쌓입니다)</p>
+    </div>
+  </div>
 
   <div id="reportBackdrop" class="report-backdrop" hidden aria-hidden="true"></div>
   <div
@@ -62,8 +122,8 @@
         <div class="report-widget-heading">
           <span class="report-widget-avatar" aria-hidden="true">?</span>
           <div>
-            <h2 id="reportWidgetTitle" class="report-widget-title">제보 도우미</h2>
-            <p class="report-widget-sub">문의하기처럼 내용을 남겨 주세요. 이 기기 브라우저에만 저장됩니다.</p>
+            <h2 id="reportWidgetTitle" class="report-widget-title">제보 · 의견</h2>
+            <p id="reportWidgetSub" class="report-widget-sub">내용을 남기면 이 기기 브라우저에만 저장됩니다.</p>
           </div>
         </div>
         <button type="button" id="reportWidgetClose" class="report-widget-close" aria-label="닫기">
@@ -79,19 +139,19 @@
             <option value="feedback">개선·문의</option>
           </select>
           <label class="sr-only" for="reportMessage">내용</label>
-          <textarea name="message" id="reportMessage" rows="4" placeholder="재현 단계, 기대 결과, 실제 결과 등" required></textarea>
+          <textarea name="message" id="reportMessage" rows="8" placeholder="재현 단계, 기대 결과, 실제 결과 등" required></textarea>
           <button type="submit" class="btn ghost full">로컬에 저장</button>
         </form>
         <p id="reportToast" class="toast-msg" hidden>저장했습니다. (이 PC 브라우저에만 쌓입니다)</p>
       </div>
     </div>
   </div>
-  <button type="button" id="reportFab" class="report-fab" aria-label="제보 도우미 열기" aria-expanded="false" aria-controls="reportWidget">
+  <button type="button" id="reportFab" class="report-fab" aria-label="제보 패널 열기" aria-expanded="false" aria-controls="reportWidget">
     ?
   </button>
 
   <script defer src="./js/core/storage.js"></script>
-  <script defer src="./js/missions.js"></script>
+  <script defer src="./js/missions-seo.js"></script>
   <script defer src="./js/core/checks.js"></script>
   <script defer src="./js/ui/prereq-dialog.js"></script>
   <script defer src="./js/ui/profile-avatar.js"></script>
