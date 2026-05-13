@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" href="./css/favicon-lucide.svg" type="image/svg+xml" sizes="any" />
+  <title>관리자 · 챌린지 관리</title>
+  <link rel="stylesheet" href="./css/style.css" />
+</head>
+<body class="page-site page-admin-dashboard">
+  <header class="site-header site-header--simple">
+    <div class="site-header-inner">
+      <a class="site-logo" href="./index.html">QA Playground</a>
+      <span id="authNavSlot" class="site-auth-nav"></span>
+    </div>
+  </header>
+
+  <main class="site-main admin-dashboard-main">
+    <div class="site-container">
+      <section id="adminBlocked" class="detail-card admin-login-card" hidden>
+        <h1 class="detail-title">관리자 전용 페이지</h1>
+        <p class="detail-summary">관리자 계정으로 로그인 후 접근할 수 있습니다.</p>
+        <p><a href="./login.html?next=admin-challenges.html" class="btn-site-primary">로그인 페이지로 이동</a></p>
+      </section>
+
+      <div id="adminWorkspace" class="admin-shell" hidden>
+        <aside class="admin-sidebar" aria-label="관리자 메뉴">
+          <p class="admin-sidebar-title">관리</p>
+          <nav class="admin-sidebar-nav">
+            <a class="admin-sidebar-link" href="./admin-missions.html">미션 카탈로그</a>
+            <a class="admin-sidebar-link is-active" href="./admin-challenges.html">챌린지 관리</a>
+            <a class="admin-sidebar-link" href="./admin-reports.html">제보 로그</a>
+          </nav>
+          <p class="admin-sidebar-foot muted small">챌린지 메타는 <code>missions.js</code>의 <code>challenge</code> 필드입니다. 타이머·실점수는 미연결입니다.</p>
+        </aside>
+
+        <div class="admin-shell-panels">
+          <section class="detail-card admin-ro-card">
+            <header class="admin-ro-card-head">
+              <h2 class="detail-h2">챌린지 관리 <span id="challengeAdminCount" class="site-badge is-muted">0</span></h2>
+              <p class="muted small admin-ro-lead">
+                학습자용 상세·목록: <a href="./index.html#/challenges">챌린지 목록</a>
+              </p>
+            </header>
+            <div class="admin-table-scroll" role="region" aria-label="챌린지 표" tabindex="0">
+              <table class="admin-ro-table">
+                <thead>
+                  <tr>
+                    <th scope="col">미션 ID</th>
+                    <th scope="col">미션 제목</th>
+                    <th scope="col">챌린지 제목</th>
+                    <th scope="col">난이도</th>
+                    <th scope="col">제한(초)</th>
+                    <th scope="col">만점</th>
+                    <th scope="col">승리 조건</th>
+                    <th scope="col">학습자 상세</th>
+                    <th scope="col">플레이</th>
+                  </tr>
+                </thead>
+                <tbody id="challengeAdminTbody"></tbody>
+              </table>
+            </div>
+          </section>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script defer src="./js/core/storage.js"></script>
+  <script defer src="./js/core/learner-href.js"></script>
+  <script defer src="./js/ui/profile-avatar.js"></script>
+  <script defer src="./js/ui/auth-nav.js"></script>
+  <script defer src="./js/mission-catalog-enrich.js"></script>
+  <script defer src="./js/missions.js"></script>
+  <script defer src="./js/pages/admin-common.js"></script>
+  <script defer src="./js/pages/admin-challenges.js"></script>
+</body>
+</html>

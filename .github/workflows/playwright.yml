@@ -1,0 +1,53 @@
+name: Playwright Generated Tests
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+      - demo-generator
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  e2e:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps
+
+      - name: Validate scenario payload
+        run: npm run scenario:validate
+
+      - name: Generate specs from scenarios
+        run: npm run pw:generate
+
+      - name: Run Playwright tests
+        run: npm run pw:test
+
+      - name: Upload Playwright report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: |
+            playwright-report
+            test-results
+            e2e/generated/_generation-report.json
+            e2e/generated/_generation-report.md
+          if-no-files-found: ignore

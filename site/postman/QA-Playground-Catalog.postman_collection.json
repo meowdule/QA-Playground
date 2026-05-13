@@ -1,0 +1,65 @@
+{
+  "info": {
+    "_postman_id": "7f3c2a10-9b4e-4c1d-a2f8-qa-playground-catalog",
+    "name": "QA Playground — Mission Catalog",
+    "description": "OpenAPI 스펙 `openapi/openapi.yaml`과 같은 경로를 호출하는 예시입니다.\n\n**브라우저 안 연습:** `play.html?m=m_feedback_tutorial` 에서 Postman 유형 패널로 동일 경로를 모의 호출할 수 있습니다.\n\n**가져오기(선택):** Postman → **Import** → 이 JSON.\n**변수:** `baseUrl`을 사이트 루트로 맞춥니다.\n**참고:** 게이트웨이가 없으면 404·501이 나와도 스펙·도구 연습용입니다.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://127.0.0.1:3000"
+    },
+    {
+      "key": "missionId",
+      "value": "m_inquiry"
+    }
+  ],
+  "item": [
+    {
+      "name": "Catalog",
+      "item": [
+        {
+          "name": "GET /api/v1/missions",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/api/v1/missions",
+            "description": "미션 요약 목록 (OpenAPI `listMissions`)"
+          },
+          "response": []
+        },
+        {
+          "name": "GET /api/v1/missions?chapter=screen_test",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/api/v1/missions?chapter=screen_test",
+            "description": "챕터 쿼리 예시"
+          },
+          "response": []
+        },
+        {
+          "name": "GET /api/v1/missions?levelCode=beginner",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/api/v1/missions?levelCode=beginner",
+            "description": "난이도 코드 쿼리 예시"
+          },
+          "response": []
+        },
+        {
+          "name": "GET /api/v1/missions/{missionId}",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/api/v1/missions/{{missionId}}",
+            "description": "미션 단건 (`missionId` 변수 수정)"
+          },
+          "response": []
+        }
+      ]
+    }
+  ]
+}

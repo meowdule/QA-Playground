@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" href="./css/favicon-lucide.svg" type="image/svg+xml" sizes="any" />
+  <title>관리자 · 미션 카탈로그</title>
+  <link rel="stylesheet" href="./css/style.css" />
+</head>
+<body class="page-site page-admin-dashboard">
+  <header class="site-header site-header--simple">
+    <div class="site-header-inner">
+      <a class="site-logo" href="./index.html">QA Playground</a>
+      <span id="authNavSlot" class="site-auth-nav"></span>
+    </div>
+  </header>
+
+  <main class="site-main admin-dashboard-main">
+    <div class="site-container">
+      <section id="adminBlocked" class="detail-card admin-login-card" hidden>
+        <h1 class="detail-title">관리자 전용 페이지</h1>
+        <p class="detail-summary">관리자 계정으로 로그인 후 접근할 수 있습니다.</p>
+        <p><a href="./login.html?next=admin-missions.html" class="btn-site-primary">로그인 페이지로 이동</a></p>
+      </section>
+
+      <div id="adminWorkspace" class="admin-shell" hidden>
+        <aside class="admin-sidebar" aria-label="관리자 메뉴">
+          <p class="admin-sidebar-title">관리</p>
+          <nav class="admin-sidebar-nav">
+            <a class="admin-sidebar-link is-active" href="./admin-missions.html">미션 카탈로그</a>
+            <a class="admin-sidebar-link" href="./admin-challenges.html">챌린지 관리</a>
+            <a class="admin-sidebar-link" href="./admin-reports.html">제보 로그</a>
+          </nav>
+          <p class="admin-sidebar-foot muted small">표는 읽기 전용입니다. 로컬 브라우저에 저장된 제보만 표시됩니다.</p>
+        </aside>
+
+        <div class="admin-shell-panels">
+          <section class="detail-card admin-ro-card">
+            <header class="admin-ro-card-head">
+              <h2 class="detail-h2">미션 카탈로그 <span id="missionCatalogCount" class="site-badge is-muted">0</span></h2>
+              <p class="muted small admin-ro-lead">
+                <code>missions.js</code> 기준 메타(chapter, levelCode, entryRoute, headerProfile, allowedRoutes)를 한눈에 검증합니다.
+              </p>
+            </header>
+            <div class="admin-table-scroll" role="region" aria-label="미션 표" tabindex="0">
+              <table class="admin-ro-table">
+                <thead>
+                  <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">제목</th>
+                    <th scope="col">유형</th>
+                    <th scope="col">난이도</th>
+                    <th scope="col">levelCode</th>
+                    <th scope="col">chapter</th>
+                    <th scope="col">entryRoute</th>
+                    <th scope="col">headerProfile</th>
+                    <th scope="col">allowedRoutes</th>
+                    <th scope="col">선행</th>
+                    <th scope="col">목표 수</th>
+                    <th scope="col">챌린지</th>
+                    <th scope="col">연습</th>
+                  </tr>
+                </thead>
+                <tbody id="missionCatalogTbody"></tbody>
+              </table>
+            </div>
+          </section>
+
+          <section class="detail-card admin-soon-card" aria-labelledby="soonBuilderTitle">
+            <h2 id="soonBuilderTitle" class="detail-h2">시나리오 라벨링 빌더</h2>
+            <p class="detail-summary">BBox 라벨링, Step 편집, 미션 JSON 생성 등은 <strong>준비 중</strong>입니다.</p>
+          </section>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script defer src="./js/core/storage.js"></script>
+  <script defer src="./js/core/learner-href.js"></script>
+  <script defer src="./js/ui/profile-avatar.js"></script>
+  <script defer src="./js/ui/auth-nav.js"></script>
+  <script defer src="./js/mission-catalog-enrich.js"></script>
+  <script defer src="./js/missions.js"></script>
+  <script defer src="./js/pages/admin-common.js"></script>
+  <script defer src="./js/pages/admin-missions.js"></script>
+</body>
+</html>

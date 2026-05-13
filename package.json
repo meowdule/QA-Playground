@@ -1,0 +1,19 @@
+{
+  "name": "qa-playground-phase4",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "scenario:validate": "node ./tools/validate-scenarios.mjs --input ./data/scenarios.json",
+    "pw:generate": "node ./tools/generate-playwright-specs.mjs --input ./data/scenarios.json --out ./e2e/generated",
+    "pw:test": "playwright test",
+    "pw:ui": "playwright test --ui",
+    "pw:codegen": "playwright codegen http://127.0.0.1:4173",
+    "site:serve": "npx --yes serve site -l 4173",
+    "ci:quality": "npm run scenario:validate && npm run pw:generate",
+    "validator:start": "node ./tools/validator-server.mjs"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.54.0"
+  }
+}

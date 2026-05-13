@@ -1,0 +1,261 @@
+openapi: 3.0.3
+info:
+  title: QA Playground — Mission Catalog API
+  description: |
+    **정적 OpenAPI 랩.** 실제 런타임은 `js/missions.js` + `mission-catalog-enrich.js`로 카탈로그를 싣습니다.
+    이 문서는 동일 도메인 모델을 REST로 노출한다고 가정했을 때의 **계약 예시**입니다. 샌드박스(연습 데모)와는 독립입니다.
+
+    * Try it out: 백엔드가 없으면 404가 납니다. 스펙·스키마 확인용으로 사용하세요.
+    * Postman: 저장소 `postman/QA-Playground-Catalog.postman_collection.json`을 Import 후 `baseUrl`만 맞춰 실행해 보세요.
+  version: "0.1.0"
+
+externalDocs:
+  description: 미션 목록(학습자)
+  url: ../index.html
+
+servers:
+  - url: /
+    description: 정적 사이트 루트 (npx serve . 등 동일 오리진)
+
+tags:
+  - name: Catalog
+    description: 미션·카탈로그 (읽기)
+
+paths:
+  /api/v1/missions:
+    get:
+      tags: [Catalog]
+      summary: 미션 요약 목록
+      operationId: listMissions
+      parameters:
+        - name: chapter
+          in: query
+          schema:
+            type: string
+            enum: [screen_test, tc_authoring, postman_test, swagger_ai_test]
+          description: 챕터 필터 (선택)
+        - name: levelCode
+          in: query
+          schema:
+            type: string
+            enum: [beginner, junior, mid, advanced]
+          description: 난이도 코드 필터 (선택)
+      responses:
+        "200":
+          description: 미션 요약 배열
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/MissionSummary"
+              example:
+                - id: m_inquiry
+                  title: "문의하기 · 폼 제출"
+                  type: success
+                  difficulty: 입문
+                  points: 80
+                  chapter: screen_test
+                  levelCode: beginner
+                - id: m_feedback_tutorial
+                  title: "포스트맨 스타일 · 카탈로그 API 요청"
+                  type: success
+                  difficulty: 입문
+                  points: 60
+                  chapter: postman_test
+                  levelCode: beginner
+                - id: m_tc_inq_once
+                  title: "TC 작성 · 문의 — 단건 정상 제출"
+                  type: tc_authoring
+                  difficulty: 입문
+                  points: 85
+                  chapter: tc_authoring
+                  levelCode: beginner
+        "501":
+          description: 아직 게이트웨이 미구현 (정적 스펙만 제공)
+
+  /api/v1/inquiries:
+    get:
+      tags: [Catalog]
+      summary: 문의 목록 (모의)
+      operationId: listInquiries
+      description: 플레이 화면 Swagger/Postman 데모에서 반환하는 샘플 JSON과 맞춘 예시입니다.
+      responses:
+        "200":
+          description: 문의 요약 배열
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [inquiries]
+                properties:
+                  inquiries:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/InquirySummary"
+                  _mock:
+                    type: boolean
+        "501":
+          description: 정적 호스트만 제공 시
+
+  /api/v1/missions/{missionId}:
+    get:
+      tags: [Catalog]
+      summary: 미션 단건
+      operationId: getMissionById
+      parameters:
+        - name: missionId
+          in: path
+          required: true
+          schema:
+            type: string
+          example: m_inquiry
+      responses:
+        "200":
+          description: 미션 전체
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Mission"
+        "404":
+          description: 존재하지 않는 missionId
+        "501":
+          description: 아직 게이트웨이 미구현
+
+components:
+  schemas:
+    InquirySummary:
+      type: object
+      required: [id, subject, status, channel, createdAt]
+      properties:
+        id:
+          type: string
+          example: inq_demo_1
+        subject:
+          type: string
+        status:
+          type: string
+          enum: [open, pending, closed]
+        channel:
+          type: string
+          example: web
+        createdAt:
+          type: string
+          format: date-time
+
+    MissionSummary:
+      type: object
+      required: [id, title, type, difficulty, points, chapter, levelCode]
+      properties:
+        id:
+          type: string
+          example: m_inquiry
+        title:
+          type: string
+        type:
+          type: string
+          enum: [success, bug_hunt, defect_report, tc_authoring]
+        difficulty:
+          type: string
+          description: 표시용 한글 난이도
+        points:
+          type: integer
+          minimum: 0
+        chapter:
+          type: string
+          enum: [screen_test, tc_authoring, postman_test, swagger_ai_test]
+        levelCode:
+          type: string
+          enum: [beginner, junior, mid, advanced]
+
+    Objective:
+      type: object
+      required: [id, checkId, text]
+      properties:
+        id:
+          type: string
+        checkId:
+          type: string
+          description: js/core/checks.js 의 판정 키
+        text:
+          type: string
+
+    MissionChallenge:
+      type: object
+      description: |
+        옵션. 스피드런 등 확장용 메타. 프런트 정적 미리보기(challenge-preview.html)용이며
+        타이머·실시간 점수 로직은 아직 API/플레이에 연결되지 않음.
+      properties:
+        title:
+          type: string
+        timeLimitSec:
+          type: number
+          minimum: 0
+          description: 표시용 제한 시간(초). 카운트다운 미구현.
+        scoreMax:
+          type: number
+          minimum: 0
+          description: 표시용 만점. 실시간 채점 미구현.
+        winConditions:
+          type: array
+          items:
+            type: string
+        penaltyNotes:
+          type: array
+          items:
+            type: string
+        staticNote:
+          type: string
+
+    SandboxConfig:
+      type: object
+      description: play / SandboxApp 에 전달되는 설정
+      properties:
+        reset:
+          type: boolean
+        allowedRoutes:
+          type: array
+          items:
+            type: string
+            enum: [landing, contact, apply, plans, signup, login, board, post, profile]
+        entryRoute:
+          type: string
+        headerProfile:
+          type: string
+          enum: [guest_nav, auth_nav, default]
+        preLoginSession:
+          type: object
+          nullable: true
+          properties:
+            email:
+              type: string
+            name:
+              type: string
+
+    Mission:
+      allOf:
+        - $ref: "#/components/schemas/MissionSummary"
+        - type: object
+          required: [summary, description, prerequisites, sandbox, objectives]
+          properties:
+            summary:
+              type: string
+            description:
+              type: string
+            prerequisites:
+              type: array
+              items:
+                type: string
+            sandbox:
+              $ref: "#/components/schemas/SandboxConfig"
+            objectives:
+              type: array
+              items:
+                $ref: "#/components/schemas/Objective"
+            challenge:
+              $ref: "#/components/schemas/MissionChallenge"
+              nullable: true
+            generatedMeta:
+              type: object
+              nullable: true
+              description: 관리자 생성 미션일 때만

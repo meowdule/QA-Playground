@@ -1,0 +1,181 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" href="./css/favicon-lucide.svg" type="image/svg+xml" sizes="any" />
+  <title>QA Playground — 실습 플레이</title>
+  <link rel="stylesheet" href="./css/style.css" />
+</head>
+<body class="page-play">
+  <header class="topbar slim topbar--minimal">
+    <div class="brand">
+      <a id="backHome" class="topbar-back" href="./index.html">← 시나리오 목록</a>
+    </div>
+    <div id="playAuthNav" class="topbar-auth"></div>
+  </header>
+
+  <main class="game-layout container-wide">
+    <aside class="mission-panel card">
+      <div class="mission-head">
+        <h2 id="missionTitle">—</h2>
+        <span id="missionDifficulty" class="pill">—</span>
+      </div>
+      <span id="missionType" class="pill type-badge">—</span>
+      <p id="missionSummary" class="mission-brief"></p>
+      <div id="missionDescription" class="mission-desc"></div>
+
+      <div id="missionObjectivesBlock">
+        <h3 class="subheading">목표</h3>
+        <ul id="objectiveList" class="objective-list"></ul>
+      </div>
+
+      <div id="missionDefectBlock" class="mission-defect-block" hidden>
+        <h3 class="subheading">결함 제보</h3>
+        <p class="muted small mission-defect-lead"></p>
+        <form id="missionDefectForm" class="defect-split-form">
+          <label class="defect-split-label"
+            >선행 조건 / 완료한 버그 과정 (선택)
+            <textarea
+              id="defectPrereq"
+              name="prereq"
+              rows="2"
+              placeholder="예: 어떤 버그 탐지 과정을 끝냈는지, 재현 전제를 짧게"
+            ></textarea>
+          </label>
+          <label class="defect-split-label"
+            >재현 단계
+            <textarea id="defectSteps" name="steps" rows="5" required placeholder="1. 랜딩에서 …"></textarea>
+          </label>
+          <label class="defect-split-label"
+            >기대 결과
+            <textarea id="defectExpected" name="expected" rows="3" required></textarea>
+          </label>
+          <label class="defect-split-label"
+            >실제 결과
+            <textarea id="defectActual" name="actual" rows="3" required></textarea>
+          </label>
+          <label class="defect-split-label"
+            >환경 (선택)
+            <input id="defectEnv" name="env" type="text" placeholder="브라우저 / OS" autocomplete="off" />
+          </label>
+          <button type="submit" class="btn full">결함 제보 저장</button>
+        </form>
+        <p id="missionDefectToast" class="toast-msg" hidden>저장했습니다. 이제 실습 완료를 누를 수 있습니다.</p>
+      </div>
+
+      <div id="missionTcBlock" class="mission-defect-block mission-tc-block" hidden>
+        <h3 class="subheading">TC 작성</h3>
+        <p class="muted small mission-tc-lead"></p>
+        <form id="missionTcForm" class="defect-split-form">
+          <label class="defect-split-label"
+            >TC ID (예: TC-INQ-001)
+            <input id="tcPracticeId" name="tcid" type="text" placeholder="TC-…" autocomplete="off" />
+          </label>
+          <label class="defect-split-label"
+            >전제 (사전 조건)
+            <textarea id="tcPremises" name="premises" rows="3" required placeholder="로그인 여부, 초기 화면 등"></textarea>
+          </label>
+          <label class="defect-split-label"
+            >수행 단계
+            <textarea id="tcSteps" name="steps" rows="5" required placeholder="1. …"></textarea>
+          </label>
+          <label class="defect-split-label"
+            >기대 결과
+            <textarea id="tcExpected" name="expected" rows="4" required placeholder="화면·토스트·DB 반영 등"></textarea>
+          </label>
+          <button type="submit" class="btn full">TC 초안 저장</button>
+        </form>
+        <p id="missionTcToast" class="toast-msg" hidden>저장했습니다.</p>
+      </div>
+
+      <button type="button" id="completeMissionBtn" class="btn full complete-mission-btn" disabled>
+        실습 완료 · 목록으로
+      </button>
+
+      <div id="activityLogSection" class="activity-log-section">
+        <div class="activity-log-head">
+          <h3 class="subheading activity-log-title">활동 로그</h3>
+          <button type="button" id="activityClearBtn" class="btn ghost btn-compact">
+            로그 초기화
+          </button>
+        </div>
+        <ul id="activityLog" class="activity-log"></ul>
+      </div>
+    </aside>
+
+    <section class="sandbox-column">
+      <div class="sandbox-toolbar card">
+        <span id="sandboxToolbarLabel" class="sandbox-label">테스트 대상</span>
+      </div>
+      <div id="playWorkArea" class="play-work-area">
+        <div id="sandboxMount" class="sandbox-root card"></div>
+        <div id="apiLabToolMount" class="api-lab-tool-mount card" hidden></div>
+        <section id="playScenarioContext" class="play-scenario-context card" hidden aria-labelledby="playScenarioContextHeading">
+          <h3 id="playScenarioContextHeading" class="subheading">이번 연습 주제</h3>
+          <p id="playScenarioContextTitle" class="play-scenario-context-title"></p>
+          <p id="playScenarioContextSummary" class="muted play-scenario-context-summary"></p>
+          <div id="playScenarioContextBody" class="play-scenario-context-body"></div>
+        </section>
+      </div>
+    </section>
+  </main>
+
+  <!-- QA Playground 사이트 자체 문의 (? FAB) -->
+  <div id="inquiryBackdrop" class="inquiry-backdrop" hidden aria-hidden="true"></div>
+  <div
+    id="inquiryWidget"
+    class="inquiry-widget"
+    hidden
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="inquiryWidgetTitle"
+  >
+    <div class="inquiry-panel card">
+      <header class="inquiry-header">
+        <div class="inquiry-heading">
+          <span class="inquiry-avatar" aria-hidden="true">?</span>
+          <div>
+            <h2 id="inquiryWidgetTitle" class="inquiry-title">사이트 문의</h2>
+            <p class="inquiry-sub">QA Playground(튜토리얼) 자체에 대한 문의·불편을 남겨 주세요. 이 기기 브라우저에만 저장됩니다.</p>
+          </div>
+        </div>
+        <button type="button" id="inquiryWidgetClose" class="inquiry-close" aria-label="닫기">×</button>
+      </header>
+      <div class="inquiry-body">
+        <form id="inquiryForm">
+          <label class="sr-only" for="inquiryMessage">문의 내용</label>
+          <textarea id="inquiryMessage" name="message" rows="5" placeholder="문의 내용을 입력해 주세요." required></textarea>
+          <button type="submit" class="btn full">로컬에 저장</button>
+        </form>
+        <p id="inquiryToast" class="toast-msg" hidden>저장했습니다.</p>
+      </div>
+    </div>
+  </div>
+
+  <div id="playFloatActions" class="play-float-actions" role="group" aria-label="사이트 문의">
+    <button
+      type="button"
+      id="inquiryFab"
+      class="report-fab"
+      aria-label="사이트 문의하기"
+      aria-expanded="false"
+      aria-controls="inquiryWidget"
+    >
+      ?
+    </button>
+  </div>
+
+  <script defer src="./js/core/storage.js"></script>
+  <script defer src="./js/mission-catalog-enrich.js"></script>
+  <script defer src="./js/missions.js"></script>
+  <script defer src="./js/core/learner-href.js"></script>
+  <script defer src="./js/core/checks.js"></script>
+  <script defer src="./js/ui/prereq-dialog.js"></script>
+  <script defer src="./js/ui/profile-avatar.js"></script>
+  <script defer src="./js/ui/auth-nav.js"></script>
+  <script defer src="./js/sandbox.js"></script>
+  <script defer src="./js/ui/play-api-lab.js"></script>
+  <script defer src="./js/pages/play.js"></script>
+</body>
+</html>

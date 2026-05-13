@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" href="./css/favicon-lucide.svg" type="image/svg+xml" sizes="any" />
+  <title>API 랩 · OpenAPI — QA Playground</title>
+  <link rel="stylesheet" href="./css/style.css" />
+  <link rel="stylesheet" href="https://unpkg.com/swagger-ui-dist@5.17.14/swagger-ui.css" crossorigin="anonymous" />
+  <style>
+    .api-lab-wrap {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 16px 24px 48px;
+    }
+    .api-lab-lead {
+      margin: 0 0 16px;
+      font-size: 0.92rem;
+      color: #475569;
+      line-height: 1.55;
+    }
+    .api-lab-links {
+      margin: 0 0 20px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px 18px;
+      font-size: 0.9rem;
+    }
+    .api-lab-links a {
+      color: #1d4ed8;
+      font-weight: 600;
+    }
+    #swagger-ui {
+      min-height: 60vh;
+    }
+    #swagger-ui .topbar {
+      display: none;
+    }
+  </style>
+</head>
+<body class="page-site">
+  <header class="site-header site-header--simple">
+    <div class="site-header-inner">
+      <a class="site-logo" href="./index.html">QA Playground</a>
+      <nav class="api-lab-links" aria-label="바로가기">
+        <a href="./index.html">← 미션 목록</a>
+        <a href="./openapi/openapi.yaml" download>openapi.yaml 다운로드</a>
+        <a href="./postman/QA-Playground-Catalog.postman_collection.json" download>Postman 컬렉션</a>
+        <a href="./play.html?m=m_feedback_tutorial">플레이 · Postman 유형</a>
+        <a href="./play.html?m=m_swagger_ai_lab">플레이 · Swagger 유형</a>
+        <a href="./index.html#/challenges">챌린지</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="api-lab-wrap">
+    <h1 class="site-section-title" style="margin-bottom: 8px">OpenAPI · API 랩</h1>
+    <p class="api-lab-lead">
+      아래는 저장소의 <code>openapi/openapi.yaml</code>을 Swagger UI로 렌더한 것입니다.
+      <strong>file://</strong> 로 열면 스펙 fetch가 막힐 수 있으니 <code>npx serve .</code> 등으로 HTTP 서빙을 권장합니다.
+      Try it out 은 백엔드가 없으면 동작하지 않습니다.
+      Postman에서는 상단 링크의 JSON을 가져와 <strong>Import</strong> 후 컬렉션 변수 <code>baseUrl</code>만 맞추고 실행해 보세요 (7번과 병렬 학습).
+    </p>
+    <div id="swagger-ui" aria-live="polite"></div>
+  </main>
+
+  <script src="https://unpkg.com/swagger-ui-dist@5.17.14/swagger-ui-bundle.js" crossorigin="anonymous"></script>
+  <script>
+    window.onload = function () {
+      window.ui = SwaggerUIBundle({
+        url: new URL("./openapi/openapi.yaml", window.location.href).href,
+        dom_id: "#swagger-ui",
+        deepLinking: true,
+        presets: [SwaggerUIBundle.presets.apis],
+        layout: "BaseLayout",
+        tryItOutEnabled: false,
+        supportedSubmitMethods: [],
+        docExpansion: "list",
+        filter: true,
+        syntaxHighlight: { activate: true, theme: "agate" }
+      });
+    };
+  </script>
+</body>
+</html>

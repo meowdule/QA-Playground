@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>이동 중…</title>
+  <script>
+    (function () {
+      var sp = new URLSearchParams(location.search);
+      var m = sp.get("m");
+      var d = sp.get("d");
+      var q = new URLSearchParams();
+      if (m) q.set("m", m);
+      if (d) q.set("d", d);
+      var tail = q.toString() ? "?" + q.toString() : "";
+      location.replace("./index.html#/mission" + tail);
+    })();
+  </script>
+</head>
+<body>
+  <p><a href="./index.html#/mission">미션 페이지로</a></p>
+</body>
+</html>
