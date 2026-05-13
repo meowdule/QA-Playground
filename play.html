@@ -49,6 +49,39 @@
     </section>
   </main>
 
+  <!-- QA Playground 사이트 자체 문의 (? FAB) -->
+  <div id="inquiryBackdrop" class="inquiry-backdrop" hidden aria-hidden="true"></div>
+  <div
+    id="inquiryWidget"
+    class="inquiry-widget"
+    hidden
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="inquiryWidgetTitle"
+  >
+    <div class="inquiry-panel card">
+      <header class="inquiry-header">
+        <div class="inquiry-heading">
+          <span class="inquiry-avatar" aria-hidden="true">?</span>
+          <div>
+            <h2 id="inquiryWidgetTitle" class="inquiry-title">사이트 문의</h2>
+            <p class="inquiry-sub">QA Playground(튜토리얼) 자체에 대한 문의·불편을 남겨 주세요. 이 기기 브라우저에만 저장됩니다.</p>
+          </div>
+        </div>
+        <button type="button" id="inquiryWidgetClose" class="inquiry-close" aria-label="닫기">×</button>
+      </header>
+      <div class="inquiry-body">
+        <form id="inquiryForm">
+          <label class="sr-only" for="inquiryMessage">문의 내용</label>
+          <textarea id="inquiryMessage" name="message" rows="5" placeholder="문의 내용을 입력해 주세요." required></textarea>
+          <button type="submit" class="btn full">로컬에 저장</button>
+        </form>
+        <p id="inquiryToast" class="toast-msg" hidden>저장했습니다.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 미션·튜토리얼 진행 제보 도우미 (별도 버튼) -->
   <div id="reportBackdrop" class="report-backdrop" hidden aria-hidden="true"></div>
   <div
     id="reportWidget"
@@ -61,10 +94,12 @@
     <div class="report-widget-panel card">
       <header class="report-widget-header">
         <div class="report-widget-heading">
-          <span class="report-widget-avatar" aria-hidden="true">?</span>
+          <span class="report-widget-avatar report-widget-avatar--guide" aria-hidden="true">튜</span>
           <div>
             <h2 id="reportWidgetTitle" class="report-widget-title">제보 도우미</h2>
-            <p class="report-widget-sub">문의하기처럼 내용을 남겨 주세요. 이 기기 브라우저에만 저장됩니다.</p>
+            <p id="reportWidgetSub" class="report-widget-sub">
+              문의하기처럼 내용을 남겨 주세요. 이 기기 브라우저에만 저장됩니다.
+            </p>
           </div>
         </div>
         <button type="button" id="reportWidgetClose" class="report-widget-close" aria-label="닫기">
@@ -81,15 +116,35 @@
           </select>
           <label class="sr-only" for="reportMessage">내용</label>
           <textarea name="message" id="reportMessage" rows="4" placeholder="재현 단계, 기대 결과, 실제 결과 등" required></textarea>
-          <button type="submit" class="btn ghost full">로컬에 저장</button>
+          <button type="submit" class="btn full">로컬에 저장</button>
         </form>
         <p id="reportToast" class="toast-msg" hidden>저장했습니다. (이 PC 브라우저에만 쌓입니다)</p>
       </div>
     </div>
   </div>
-  <button type="button" id="reportFab" class="report-fab" aria-label="제보 도우미 열기" aria-expanded="false" aria-controls="reportWidget">
-    ?
-  </button>
+
+  <div class="play-float-actions" role="group" aria-label="문의 및 제보">
+    <button
+      type="button"
+      id="guideReportOpenBtn"
+      class="guide-report-open-btn"
+      aria-label="제보 도우미 열기"
+      aria-expanded="false"
+      aria-controls="reportWidget"
+    >
+      제보 도우미
+    </button>
+    <button
+      type="button"
+      id="inquiryFab"
+      class="report-fab"
+      aria-label="사이트 문의하기"
+      aria-expanded="false"
+      aria-controls="inquiryWidget"
+    >
+      ?
+    </button>
+  </div>
 
   <script defer src="./js/core/storage.js"></script>
   <script defer src="./js/missions.js"></script>
