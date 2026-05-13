@@ -5,6 +5,7 @@ import "../core/learner-href.js";
 import "../ui/profile-avatar.js";
 import "../ui/auth-nav.js";
 import "../ui/prereq-dialog.js";
+import "../ui/confirm-dialog.js";
 
 import { parseLearnerRoute } from "./router.js";
 import { renderSiteChrome, renderAuthChrome, setNavActive } from "./shell.js";
@@ -57,6 +58,9 @@ const HOME_MARKUP = `
             <span class="catalog-filter-label">진행 상태</span>
             <select id="catalogProgressFilter" class="catalog-select" aria-label="진행 상태 필터"></select>
           </label>
+          <button type="button" id="catalogFilterReset" class="btn-site-secondary catalog-filter-reset">
+            필터 초기화
+          </button>
         </div>
       </div>
       <div id="missionCatalogRoot" class="mission-catalog-root"></div>

@@ -2029,6 +2029,17 @@ select {
   background: #fafbf9;
 }
 
+.inquiry-form-error {
+  margin: 0 0 10px;
+  padding: 8px 10px;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  line-height: 1.45;
+  background: #fef2f2;
+  color: #b91c1c;
+  border: 1px solid #fecaca;
+}
+
 .inquiry-body textarea {
   width: 100%;
   margin-bottom: 10px;
@@ -3301,6 +3312,12 @@ select {
   flex-wrap: wrap;
   align-items: flex-end;
   gap: 16px 24px;
+}
+
+.catalog-filter-reset {
+  margin-left: auto;
+  align-self: center;
+  white-space: nowrap;
 }
 
 .catalog-filter {

@@ -63,6 +63,7 @@
     inquiryMessage: document.getElementById("inquiryMessage"),
     inquiryWidgetClose: document.getElementById("inquiryWidgetClose"),
     inquiryToast: document.getElementById("inquiryToast"),
+    inquiryError: document.getElementById("inquiryError"),
     completeMissionBtn: document.getElementById("completeMissionBtn"),
     activityClearBtn: document.getElementById("activityClearBtn"),
     progressText: document.getElementById("progressText"),
@@ -166,9 +167,9 @@
         QA.playApiLab.resetApiLabState();
         const tool = refs.apiLabToolMount;
         if (tool && mission.sandbox.playLayout === "postman_lab") {
-          QA.playApiLab.mountPostmanPanel(tool, (msg) => logActivity(msg));
+          QA.playApiLab.mountPostmanPanel(tool, onApiLabActivity);
         } else if (tool) {
-          QA.playApiLab.mountSwaggerPanel(tool, (msg) => logActivity(msg));
+          QA.playApiLab.mountSwaggerPanel(tool, onApiLabActivity);
         }
       }
       if (refs.sandboxToolbarLabel) refs.sandboxToolbarLabel.textContent = "Postman 스타일 연습 데모";
@@ -230,6 +231,12 @@
     });
     checkState = next;
     renderObjectives();
+  }
+
+  /** Postman/Swagger 패널 활동 시 로그 + 목표(checkState) 갱신 */
+  function onApiLabActivity(msg) {
+    logActivity(msg);
+    applyChecksFromSandbox();
   }
 
   function mountInteractiveSandbox() {
@@ -579,9 +586,9 @@
       if (tool) {
         tool.innerHTML = "";
         if (mission.sandbox.playLayout === "postman_lab") {
-          QA.playApiLab.mountPostmanPanel(tool, (msg) => logActivity(msg));
+          QA.playApiLab.mountPostmanPanel(tool, onApiLabActivity);
         } else {
-          QA.playApiLab.mountSwaggerPanel(tool, (msg) => logActivity(msg));
+          QA.playApiLab.mountSwaggerPanel(tool, onApiLabActivity);
         }
       }
       applyChecksFromSandbox();
@@ -672,7 +679,10 @@
     if (!refs.missionDefectForm) return;
     refs.missionDefectForm.addEventListener("submit", (e) => {
       e.preventDefault();
-      if (!isDefectReportMission()) return;
+      if (!isDefectReportMission()) {
+        alert("이 미션에서는 결함 제보 양식을 사용하지 않습니다.");
+        return;
+      }
       const prereq = String(refs.defectPrereq?.value || "").trim();
       const steps = String(refs.defectSteps?.value || "").trim();
       const exp = String(refs.defectExpected?.value || "").trim();
@@ -707,10 +717,24 @@
 
   function setupInquirySubmit() {
     if (!refs.inquiryForm) return;
+    refs.inquiryMessage?.addEventListener("input", () => {
+      if (refs.inquiryError) {
+        refs.inquiryError.hidden = true;
+        refs.inquiryError.textContent = "";
+      }
+    });
     refs.inquiryForm.addEventListener("submit", (e) => {
       e.preventDefault();
       const msg = String(refs.inquiryMessage?.value || "").trim();
-      if (!msg) return;
+      if (!msg) {
+        if (refs.inquiryError) {
+          refs.inquiryError.hidden = false;
+          refs.inquiryError.textContent = "문의 내용을 입력한 뒤 다시 눌러 주세요.";
+        }
+        refs.inquiryMessage?.focus();
+        return;
+      }
+      if (refs.inquiryError) refs.inquiryError.hidden = true;
       QA.addReport({
         userEmail: userKey,
         missionId: mission.id,
@@ -720,7 +744,7 @@
         scope: "site_inquiry"
       });
       refs.inquiryForm.reset();
-      if (useInteractiveSandbox()) applyChecksFromSandbox();
+      applyChecksFromSandbox();
       if (refs.inquiryToast) {
         refs.inquiryToast.hidden = false;
         setTimeout(() => {
@@ -745,6 +769,10 @@
       fab.classList.toggle("is-open", open);
     }
     if (open) {
+      if (refs.inquiryError) {
+        refs.inquiryError.hidden = true;
+        refs.inquiryError.textContent = "";
+      }
       refs.inquiryMessage?.focus();
     } else {
       if (!opts.skipCloseOther) fab?.focus();

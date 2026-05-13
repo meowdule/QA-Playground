@@ -37,13 +37,27 @@ export function initChallengeListPage() {
     card.className = "course-card course-card--challenge";
     card.href = `./play.html?m=${encodeURIComponent(m.id)}&from=challenge`;
     card.addEventListener("click", (e) => {
-      if (
-        !window.confirm(
-          "테스트(플레이) 화면으로 이동할까요?\n\n챌린지 타이머·실점수는 아직 연결되어 있지 않습니다."
-        )
-      ) {
-        e.preventDefault();
-      }
+      e.preventDefault();
+      const dest = card.href;
+      const ask =
+        typeof QA.openLearnerConfirm === "function"
+          ? () =>
+              QA.openLearnerConfirm({
+                title: "테스트 화면으로 이동",
+                message:
+                  "플레이(테스트) 화면으로 이동합니다.\n\n타이머·실시간 채점은 아직 연결되어 있지 않으며, 연습용 데모만 열립니다.",
+                confirmText: "이동",
+                cancelText: "취소"
+              })
+          : () =>
+              Promise.resolve(
+                window.confirm(
+                  "테스트(플레이) 화면으로 이동할까요?\n\n챌린지 타이머·실점수는 아직 연결되어 있지 않습니다."
+                )
+              );
+      ask().then((ok) => {
+        if (ok) window.location.href = dest;
+      });
     });
 
     const bits = [];

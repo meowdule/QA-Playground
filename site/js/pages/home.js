@@ -304,6 +304,12 @@ export function initHomePage() {
     refs.chapterFilter?.addEventListener("change", rerender);
     refs.levelFilter?.addEventListener("change", rerender);
     refs.progressFilter?.addEventListener("change", rerender);
+    document.getElementById("catalogFilterReset")?.addEventListener("click", () => {
+      if (refs.chapterFilter) refs.chapterFilter.value = "all";
+      if (refs.levelFilter) refs.levelFilter.value = "all";
+      if (refs.progressFilter) refs.progressFilter.value = "all";
+      renderCatalog();
+    });
   }
 
   const appQ = QA.learnerAppSearchParams();
