@@ -13,6 +13,7 @@
 
 ## Notes
 
+- `e2e/site-smoke.spec.js` is always committed so CI passes when `data/scenarios.json` has no scenarios (the generator then writes no `*.spec.js` files).
 - Generated spec files are written to `e2e/generated`.
 - Generation reports are written to:
   - `e2e/generated/_generation-report.json`
