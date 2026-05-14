@@ -8,9 +8,12 @@ export function renderSiteChrome() {
       <div class="site-header-brand-row">
         <a class="site-logo" href="${h.home()}">QA Playground</a>
         <nav class="site-header-nav" aria-label="주요 페이지">
-          <a class="site-nav-link" data-spa="home" href="${h.home()}">시나리오 실습</a>
-          <a class="site-nav-link" data-spa="tc-lab" href="${h.tcLab()}">TC 작성</a>
+          <a class="site-nav-link" data-spa="learn" href="${h.learn()}">학습</a>
+          <a class="site-nav-link" data-spa="missions" href="${h.home()}">미션</a>
           <a class="site-nav-link" data-spa="challenges" href="${h.challenges()}">챌린지</a>
+          <a class="site-nav-link" data-spa="board" href="${h.board()}">토론</a>
+          <span class="site-nav-divider" aria-hidden="true"></span>
+          <a class="site-nav-link site-nav-link--sub" data-spa="tc-lab" href="${h.tcLab()}">TC 작성</a>
         </nav>
       </div>
       <span id="authNavSlot" class="site-auth-nav"></span>
@@ -21,9 +24,11 @@ export function renderSiteChrome() {
     <div class="site-footer-inner">
       <span class="site-footer-brand">QA Playground</span>
       <nav class="site-footer-nav" aria-label="바로가기">
-        <a href="${h.home()}">시나리오 실습</a>
-        <a href="${h.tcLab()}">TC 작성</a>
+        <a href="${h.learn()}">학습</a>
+        <a href="${h.home()}">미션</a>
         <a href="${h.challenges()}">챌린지</a>
+        <a href="${h.board()}">토론</a>
+        <a href="${h.tcLab()}">TC 작성</a>
       </nav>
       <p class="site-footer-note">로컬 브라우저에만 진행이 저장됩니다.</p>
     </div>
@@ -41,10 +46,11 @@ export function renderAuthChrome() {
 }
 
 export function setNavActive(routeKey) {
-  document.querySelectorAll("[data-spa]").forEach((a) => {
-    const k = a.getAttribute("data-spa");
+  document.querySelectorAll("[data-spa]").forEach((el) => {
+    const k = el.getAttribute("data-spa");
     const on = k === routeKey;
-    if (on) a.setAttribute("aria-current", "page");
-    else a.removeAttribute("aria-current");
+    el.classList.toggle("is-active", on);
+    if (on) el.setAttribute("aria-current", "page");
+    else el.removeAttribute("aria-current");
   });
 }

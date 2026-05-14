@@ -8,6 +8,12 @@
     home() {
       return "./index.html#/";
     },
+    learn() {
+      return "./index.html#/learn";
+    },
+    board() {
+      return "./index.html#/board";
+    },
     tcLab() {
       return "./index.html#/tc-lab";
     },
