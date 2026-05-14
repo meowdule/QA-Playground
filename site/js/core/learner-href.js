@@ -8,11 +8,26 @@
     home() {
       return "./index.html#/";
     },
+    /** 미션 홈 필터 등: #/?chapter=screen_test */
+    homeQuery(params) {
+      const q = new URLSearchParams();
+      Object.entries(params || {}).forEach(([k, v]) => {
+        if (v != null && v !== "") q.set(k, v);
+      });
+      const s = q.toString();
+      return s ? `./index.html#/?${s}` : this.home();
+    },
     learn() {
       return "./index.html#/learn";
     },
+    learnQuery(section) {
+      return section ? `./index.html#/learn?section=${encodeURIComponent(section)}` : this.learn();
+    },
     board() {
       return "./index.html#/board";
+    },
+    boardQuery(topic) {
+      return topic ? `./index.html#/board?topic=${encodeURIComponent(topic)}` : this.board();
     },
     tcLab() {
       return "./index.html#/tc-lab";

@@ -22,6 +22,234 @@ body.page-site {
   line-height: 1.55;
 }
 
+.site-header--mega {
+  position: relative;
+}
+
+.mega-hover-area {
+  position: relative;
+}
+
+.site-header-inner--mega-top {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 8px 24px 10px;
+  display: flex;
+  align-items: center;
+  gap: 1rem 1.25rem;
+  flex-wrap: wrap;
+}
+
+.site-header-inner--mega-top .site-auth-nav {
+  margin-left: auto;
+}
+
+.site-mega-tabs {
+  display: flex;
+  align-items: stretch;
+  gap: 6px;
+  flex: 1 1 auto;
+  justify-content: center;
+  min-width: 0;
+  flex-wrap: wrap;
+}
+
+.mega-tab {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 14px 12px;
+  border-radius: 10px 10px 0 0;
+  font-weight: 700;
+  font-size: 0.92rem;
+  border: 1px solid transparent;
+  border-bottom: none;
+  transition: background 0.15s ease, color 0.15s ease;
+  text-decoration: none !important;
+}
+
+.mega-tab--learn {
+  background: rgba(109, 90, 156, 0.12);
+  border-color: rgba(109, 90, 156, 0.35);
+  color: #4a3d6b !important;
+}
+
+.mega-tab--missions {
+  background: rgba(94, 112, 85, 0.14);
+  border-color: rgba(94, 112, 85, 0.4);
+  color: var(--forest) !important;
+}
+
+.mega-tab--challenge {
+  background: rgba(198, 122, 62, 0.14);
+  border-color: rgba(198, 122, 62, 0.45);
+  color: #8b4d1f !important;
+}
+
+.mega-tab--board {
+  background: rgba(139, 90, 74, 0.14);
+  border-color: rgba(139, 90, 74, 0.4);
+  color: #5c3d32 !important;
+}
+
+.mega-tab:hover {
+  filter: brightness(0.97);
+}
+
+.mega-tab.is-active {
+  box-shadow: inset 0 -3px 0 0 currentColor;
+}
+
+.mega-panel {
+  background: #fff;
+  border-bottom: 1px solid #d7d4cf;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.08);
+}
+
+.mega-panel-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 16px 24px 22px;
+}
+
+.mega-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 14px;
+  align-items: stretch;
+}
+
+@media (max-width: 960px) {
+  .mega-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 520px) {
+  .mega-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.mega-col {
+  border-radius: 12px;
+  padding: 12px 12px 14px;
+  border: 2px solid #e5e8eb;
+  background: #fdfdfc;
+  min-height: 100%;
+}
+
+.mega-col--learn {
+  border-color: rgba(109, 90, 156, 0.45);
+  background: linear-gradient(180deg, rgba(109, 90, 156, 0.08) 0%, #fdfdfc 48%);
+}
+
+.mega-col--missions {
+  border-color: rgba(94, 112, 85, 0.45);
+  background: linear-gradient(180deg, rgba(94, 112, 85, 0.1) 0%, #fdfdfc 48%);
+}
+
+.mega-col--challenge {
+  border-color: rgba(198, 122, 62, 0.5);
+  background: linear-gradient(180deg, rgba(198, 122, 62, 0.1) 0%, #fdfdfc 48%);
+}
+
+.mega-col--board {
+  border-color: rgba(139, 90, 74, 0.45);
+  background: linear-gradient(180deg, rgba(139, 90, 74, 0.09) 0%, #fdfdfc 48%);
+}
+
+.mega-col-head {
+  margin: 0 0 10px;
+  font-size: 0.82rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: var(--near-black);
+}
+
+.mega-item-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.mega-item-link {
+  display: block;
+  text-decoration: none !important;
+  color: inherit !important;
+  padding: 10px 10px;
+  border-radius: 8px;
+  background: #fff;
+  border: 1px solid #e8e6e3;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.mega-item-link:hover {
+  border-color: #c9c5bf;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.mega-item-title {
+  display: block;
+  font-weight: 700;
+  font-size: 0.88rem;
+  color: var(--near-black);
+}
+
+.mega-item-desc {
+  display: block;
+  margin-top: 3px;
+  font-size: 0.78rem;
+  color: var(--slate);
+  line-height: 1.45;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .site-header--mega .mega-panel {
+    display: none;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 100%;
+    z-index: 120;
+  }
+
+  .mega-hover-area:hover .mega-panel,
+  .mega-hover-area:focus-within .mega-panel {
+    display: block;
+  }
+}
+
+@media (hover: none), (pointer: coarse) {
+  .site-header--mega .mega-panel {
+    display: block;
+    position: static;
+    box-shadow: none;
+    border-bottom: 1px solid #d7d4cf;
+  }
+}
+
+.learn-hub .learn-section {
+  margin-bottom: 1rem;
+  scroll-margin-top: 100px;
+}
+
+.learn-hub .learn-section:last-child {
+  margin-bottom: 0;
+}
+
+.board-topic-card {
+  scroll-margin-top: 100px;
+}
+
+.board-topic-card:target {
+  outline: 2px solid var(--matcha);
+  outline-offset: 2px;
+}
+
 .site-header {
   position: sticky;
   top: 0;

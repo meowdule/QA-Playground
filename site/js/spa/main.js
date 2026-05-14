@@ -13,8 +13,8 @@ import { initHomePage } from "../pages/home.js";
 import { initMissionPage } from "../pages/mission-detail.js";
 import { initTcLabPage } from "../pages/tc-lab.js";
 import { initChallengeListPage } from "../pages/challenge-list.js";
-import { initLearnPage } from "../pages/learn.js";
-import { initBoardPage } from "../pages/board.js";
+import { initLearnPage, getLearnPageHtml } from "../pages/learn.js";
+import { initBoardPage, getBoardPageHtml } from "../pages/board.js";
 import { initLoginPage } from "../pages/login.js";
 import { initSignupPage } from "../pages/signup.js";
 import { initAccountPage } from "../pages/account.js";
@@ -124,79 +124,6 @@ function missionMarkup() {
           <a id="btnStart" class="btn-site-primary" href="#">실습 시작하기</a>
         </div>
       </article>
-    </div>
-  </main>`;
-}
-
-function learnMarkup() {
-  const h = QA().learnerHref;
-  return `
-  <section class="site-hero">
-    <div class="site-hero-inner">
-      <h1 class="site-hero-title">학습</h1>
-      <p class="site-hero-desc">
-        테스트·기획·QA에 쓰는 용어와 흐름을 짧게 정리한 허브입니다. 아래 카드에서 <strong>미션·TC·챌린지·토론</strong>으로 이동할 수 있습니다.
-      </p>
-    </div>
-  </section>
-  <main class="site-main">
-    <div class="site-container">
-      <div class="mission-catalog-root" style="display:grid;gap:1rem;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));">
-        <article class="detail-card" style="margin:0;padding:1rem 1.1rem;">
-          <h2 class="detail-h2" style="margin-top:0;font-size:1rem;">미션(시나리오 실습)</h2>
-          <p class="muted small" style="margin:0 0 0.75rem;">기능 묶음별 시나리오 카탈로그</p>
-          <a class="btn-site-primary" href="${h.home()}" style="display:inline-block;text-align:center;">미션으로</a>
-        </article>
-        <article class="detail-card" style="margin:0;padding:1rem 1.1rem;">
-          <h2 class="detail-h2" style="margin-top:0;font-size:1rem;">TC 작성</h2>
-          <p class="muted small" style="margin:0 0 0.75rem;">문서형 TC 초안 연습</p>
-          <a class="btn-site-secondary" href="${h.tcLab()}">TC 작성</a>
-        </article>
-        <article class="detail-card" style="margin:0;padding:1rem 1.1rem;">
-          <h2 class="detail-h2" style="margin-top:0;font-size:1rem;">챌린지</h2>
-          <p class="muted small" style="margin:0 0 0.75rem;">난이도 높은 시나리오 모음</p>
-          <a class="btn-site-secondary" href="${h.challenges()}">챌린지</a>
-        </article>
-        <article class="detail-card" style="margin:0;padding:1rem 1.1rem;">
-          <h2 class="detail-h2" style="margin-top:0;font-size:1rem;">토론</h2>
-          <p class="muted small" style="margin:0 0 0.75rem;">질문·팁·회고(데모 목록)</p>
-          <a class="btn-site-secondary" href="${h.board()}">토론 보기</a>
-        </article>
-      </div>
-    </div>
-  </main>`;
-}
-
-function boardMarkup() {
-  return `
-  <section class="site-hero">
-    <div class="site-hero-inner">
-      <h1 class="site-hero-title">토론</h1>
-      <p class="site-hero-desc">
-        질문·팁·회고를 남기는 공간입니다. <strong>GitHub Pages 정적 데모</strong>에서는 아래처럼 샘플 목록만 보여 주며, 로그인·글쓰기·DB는 별도 웹앱에서 붙이는 형태를 가정합니다.
-      </p>
-    </div>
-  </section>
-  <main class="site-main">
-    <div class="site-container site-main-narrow" style="max-width:720px;">
-      <ul class="feature-hub-list" style="list-style:none;padding:0;margin:0;">
-        <li class="detail-card" style="margin:0 0 1rem;padding:1rem 1.1rem;">
-          <p class="muted small" style="margin:0 0 0.35rem;">자유 · 민지 · 3일 전</p>
-          <strong>첫 미션에서 로그인 게이트가 안 떠요</strong>
-          <p class="small" style="margin:0.5rem 0 0;">쿠키를 막아 두었는지, 시크릿 창인지 확인해 보세요.</p>
-        </li>
-        <li class="detail-card" style="margin:0 0 1rem;padding:1rem 1.1rem;">
-          <p class="muted small" style="margin:0 0 0.35rem;">팁 · 현우 · 1주 전</p>
-          <strong>TC 작성에서 Given/When/Then 나누는 팁</strong>
-          <p class="small" style="margin:0.5rem 0 0;">한 문장에 검증이 두 개면 케이스를 쪼개 보는 게 좋습니다.</p>
-        </li>
-        <li class="detail-card" style="margin:0;padding:1rem 1.1rem;">
-          <p class="muted small" style="margin:0 0 0.35rem;">회고 · SQAT · 2주 전</p>
-          <strong>챌린지 타이머 연동은 아직 데모 단계</strong>
-          <p class="small" style="margin:0.5rem 0 0;">점수·랭킹은 추후 버전에서 연결할 예정입니다.</p>
-        </li>
-      </ul>
-      <p class="muted small" style="margin-top:1.25rem;">샘플 문구입니다. 실제 게시·댓글 기능은 저장소의 Next 기반 앱과 배포 전략에 맞춰 확장하면 됩니다.</p>
     </div>
   </main>`;
 }
@@ -364,7 +291,7 @@ function route() {
   }
 
   if (p === "/learn") {
-    out.innerHTML = learnMarkup();
+    out.innerHTML = getLearnPageHtml();
     document.title = "학습 · QA Playground";
     setNavActive("learn");
     initLearnPage();
@@ -372,7 +299,7 @@ function route() {
   }
 
   if (p === "/board") {
-    out.innerHTML = boardMarkup();
+    out.innerHTML = getBoardPageHtml();
     document.title = "토론 · QA Playground";
     setNavActive("board");
     initBoardPage();
