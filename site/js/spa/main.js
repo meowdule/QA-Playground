@@ -8,7 +8,7 @@ import "../ui/prereq-dialog.js";
 import "../ui/confirm-dialog.js";
 
 import { parseLearnerRoute } from "./router.js";
-import { renderSiteChrome, renderAuthChrome, setNavActive } from "./shell.js";
+import { renderSiteChrome, renderAuthChrome, setNavActive, bindMegaDropNav } from "./shell.js";
 import { initHomePage } from "../pages/home.js";
 import { initMissionPage } from "../pages/mission-detail.js";
 import { initTcLabPage } from "../pages/tc-lab.js";
@@ -262,6 +262,7 @@ function mountShell(siteMode) {
   if (!root) return;
   root.innerHTML = siteMode ? renderSiteChrome() : renderAuthChrome();
   bindSpaNavClicks();
+  if (siteMode) bindMegaDropNav();
 }
 
 function route() {

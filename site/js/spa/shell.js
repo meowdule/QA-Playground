@@ -1,82 +1,107 @@
 const QA = () => window.QA;
 
 function megaLearnLinks(h) {
-  return `
-        <ul class="mega-item-list">
-          <li><a class="mega-item-link" href="${h.learnArticle("concepts")}"><span class="mega-item-title">QA 개념</span><span class="mega-item-desc">용어 / 이론</span></a></li>
-          <li><a class="mega-item-link" href="${h.learnArticle("techniques")}"><span class="mega-item-title">테스트 기법</span><span class="mega-item-desc">동등분할 등</span></a></li>
-          <li><a class="mega-item-link" href="${h.learnArticle("defect-mgmt")}"><span class="mega-item-title">결함 관리</span><span class="mega-item-desc">심각도 기준</span></a></li>
-          <li><a class="mega-item-link" href="${h.learnArticle("reports")}"><span class="mega-item-title">보고서 작성</span><span class="mega-item-desc">PASS/FAIL 기준</span></a></li>
-          <li><a class="mega-item-link" href="${h.learnArticle("sqat-exam")}"><span class="mega-item-title">SQAT 시험</span><span class="mega-item-desc">출제 범위 안내</span></a></li>
-        </ul>`;
+  const rows = [
+    ["concepts", "QA 개념"],
+    ["techniques", "테스트 기법"],
+    ["defect-mgmt", "결함 관리"],
+    ["reports", "보고서 작성"],
+    ["sqat-exam", "SQAT 시험"]
+  ];
+  return rows.map(([slug, label]) => `<a class="mega-drop-link" href="${h.learnArticle(slug)}">${label}</a>`).join("");
 }
 
 function megaMissionLinks(h) {
-  return `
-        <ul class="mega-item-list">
-          <li><a class="mega-item-link" href="${h.home()}"><span class="mega-item-title">시나리오</span><span class="mega-item-desc">TC 수행 실습</span></a></li>
-          <li><a class="mega-item-link" data-spa="tc-lab" href="${h.tcLab()}"><span class="mega-item-title">TC 작성</span><span class="mega-item-desc">문서화 실습</span></a></li>
-          <li><a class="mega-item-link" href="${h.mission("m_tc_inq_once")}"><span class="mega-item-title">보고서 작성</span><span class="mega-item-desc">결과 기준 입력</span></a></li>
-        </ul>`;
+  const rows = [
+    [h.home(), "시나리오", false],
+    [h.tcLab(), "TC 작성", true],
+    [h.mission("m_tc_inq_once"), "보고서 작성", false]
+  ];
+  return rows
+    .map(([href, label, isTc]) =>
+      isTc
+        ? `<a class="mega-drop-link" data-spa="tc-lab" href="${href}">${label}</a>`
+        : `<a class="mega-drop-link" href="${href}">${label}</a>`
+    )
+    .join("");
 }
 
 function megaChallengeLinks(h) {
-  return `
-        <ul class="mega-item-list">
-          <li><a class="mega-item-link" href="${h.challengesTrack("theory")}"><span class="mega-item-title">이론 챌린지</span><span class="mega-item-desc">1과목 대비</span></a></li>
-          <li><a class="mega-item-link" href="${h.challengesTrack("tc")}"><span class="mega-item-title">TC 챌린지</span><span class="mega-item-desc">2과목 대비</span></a></li>
-          <li><a class="mega-item-link" href="${h.challengesTrack("defect")}"><span class="mega-item-title">결함 챌린지</span><span class="mega-item-desc">3과목 대비</span></a></li>
-          <li><a class="mega-item-link" href="${h.challengesTrack("mock")}"><span class="mega-item-title">모의고사</span><span class="mega-item-desc">전과목 시뮬레이션</span></a></li>
-        </ul>`;
+  const rows = [
+    ["theory", "이론 챌린지"],
+    ["tc", "TC 챌린지"],
+    ["defect", "결함 챌린지"],
+    ["mock", "모의고사"]
+  ];
+  return rows
+    .map(([track, label]) => `<a class="mega-drop-link" href="${h.challengesTrack(track)}">${label}</a>`)
+    .join("");
 }
 
 function megaBoardLinks(h) {
-  return `
-        <ul class="mega-item-list">
-          <li><a class="mega-item-link" href="${h.boardTopic("severity")}"><span class="mega-item-title">심각도 논의</span><span class="mega-item-desc">판단 근거 토론</span></a></li>
-          <li><a class="mega-item-link" href="${h.boardTopic("tc-design")}"><span class="mega-item-title">TC 설계 기준</span><span class="mega-item-desc">방법론 논의</span></a></li>
-          <li><a class="mega-item-link" href="${h.boardTopic("defect-edge")}"><span class="mega-item-title">결함 여부 논의</span><span class="mega-item-desc">경계 케이스</span></a></li>
-          <li><a class="mega-item-link" href="${h.boardTopic("free")}"><span class="mega-item-title">자유 토론</span><span class="mega-item-desc">QA 일반</span></a></li>
-        </ul>`;
+  const rows = [
+    ["severity", "심각도 논의"],
+    ["tc-design", "TC 설계 기준"],
+    ["defect-edge", "결함 여부 논의"],
+    ["free", "자유 토론"]
+  ];
+  return rows.map(([slug, label]) => `<a class="mega-drop-link" href="${h.boardTopic(slug)}">${label}</a>`).join("");
+}
+
+/** 터치: 첫 탭은 패널만 토글, 패널이 열린 상태에서 탭하면 링크 이동 */
+export function bindMegaDropNav() {
+  const mq = window.matchMedia("(hover: hover) and (pointer: fine)");
+  const nav = document.querySelector(".site-header-nav--drops");
+  if (!nav || mq.matches) return;
+
+  nav.querySelectorAll(".mega-drop").forEach((drop) => {
+    const a = drop.querySelector(":scope > a.site-nav-link");
+    const panel = drop.querySelector(":scope > .mega-drop-panel");
+    if (!a || !panel) return;
+    a.addEventListener("click", (e) => {
+      if (drop.classList.contains("is-open")) {
+        drop.classList.remove("is-open");
+        return;
+      }
+      e.preventDefault();
+      nav.querySelectorAll(".mega-drop.is-open").forEach((d) => {
+        if (d !== drop) d.classList.remove("is-open");
+      });
+      drop.classList.add("is-open");
+    });
+  });
+
+  document.addEventListener("click", (e) => {
+    if (nav.contains(e.target)) return;
+    nav.querySelectorAll(".mega-drop.is-open").forEach((d) => d.classList.remove("is-open"));
+  });
 }
 
 export function renderSiteChrome() {
   const h = QA().learnerHref;
   return `
-  <header class="site-header site-header--mega">
-    <div class="mega-hover-area">
-      <div class="site-header-inner site-header-inner--mega-top">
-        <a class="site-logo" href="${h.home()}">QA Playground</a>
-        <nav class="site-mega-tabs" aria-label="주요 메뉴">
-          <a class="mega-tab mega-tab--learn" data-spa="learn" href="${h.learn()}">학습</a>
-          <a class="mega-tab mega-tab--missions" data-spa="missions" href="${h.home()}">미션</a>
-          <a class="mega-tab mega-tab--challenge" data-spa="challenges" href="${h.challenges()}">챌린지</a>
-          <a class="mega-tab mega-tab--board" data-spa="board" href="${h.board()}">토론</a>
-        </nav>
-        <span id="authNavSlot" class="site-auth-nav"></span>
-      </div>
-      <div class="mega-panel" role="navigation" aria-label="하위 메뉴">
-        <div class="mega-panel-inner">
-          <div class="mega-grid">
-            <section class="mega-col mega-col--learn" aria-labelledby="mega-col-learn-h">
-              <h2 class="mega-col-head" id="mega-col-learn-h">학습</h2>
-              ${megaLearnLinks(h)}
-            </section>
-            <section class="mega-col mega-col--missions" aria-labelledby="mega-col-mission-h">
-              <h2 class="mega-col-head" id="mega-col-mission-h">미션</h2>
-              ${megaMissionLinks(h)}
-            </section>
-            <section class="mega-col mega-col--challenge" aria-labelledby="mega-col-challenge-h">
-              <h2 class="mega-col-head" id="mega-col-challenge-h">챌린지</h2>
-              ${megaChallengeLinks(h)}
-            </section>
-            <section class="mega-col mega-col--board" aria-labelledby="mega-col-board-h">
-              <h2 class="mega-col-head" id="mega-col-board-h">토론</h2>
-              ${megaBoardLinks(h)}
-            </section>
-          </div>
+  <header class="site-header">
+    <div class="site-header-inner site-header-inner--navrow">
+      <a class="site-logo" href="${h.home()}">QA Playground</a>
+      <nav class="site-header-nav site-header-nav--drops" aria-label="주요 메뉴">
+        <div class="mega-drop">
+          <a class="site-nav-link" data-spa="learn" href="${h.learn()}">학습</a>
+          <div class="mega-drop-panel" role="menu">${megaLearnLinks(h)}</div>
         </div>
-      </div>
+        <div class="mega-drop">
+          <a class="site-nav-link" data-spa="missions" href="${h.home()}">미션</a>
+          <div class="mega-drop-panel" role="menu">${megaMissionLinks(h)}</div>
+        </div>
+        <div class="mega-drop">
+          <a class="site-nav-link" data-spa="challenges" href="${h.challenges()}">챌린지</a>
+          <div class="mega-drop-panel" role="menu">${megaChallengeLinks(h)}</div>
+        </div>
+        <div class="mega-drop">
+          <a class="site-nav-link" data-spa="board" href="${h.board()}">토론</a>
+          <div class="mega-drop-panel" role="menu">${megaBoardLinks(h)}</div>
+        </div>
+      </nav>
+      <span id="authNavSlot" class="site-auth-nav"></span>
     </div>
   </header>
   <div id="spa-outlet" class="spa-outlet"></div>

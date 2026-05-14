@@ -22,184 +22,77 @@ body.page-site {
   line-height: 1.55;
 }
 
-.site-header--mega {
-  position: relative;
-}
-
-.mega-hover-area {
-  position: relative;
-}
-
-.site-header-inner--mega-top {
+/* ——— 헤더: 기존 텍스트 링크 + 항목별 단일 드롭다운(서브만 해당 열) ——— */
+.site-header-inner--navrow {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 6px 20px 8px;
+  padding: 0 24px;
+  min-height: 56px;
   display: flex;
   align-items: center;
-  gap: 0.75rem 1rem;
+  justify-content: space-between;
   flex-wrap: wrap;
+  gap: 8px 12px;
+  padding-top: 8px;
+  padding-bottom: 8px;
 }
 
-.site-header-inner--mega-top .site-auth-nav {
+.site-header-inner--navrow .site-auth-nav {
   margin-left: auto;
 }
 
-.site-mega-tabs {
-  display: flex;
-  align-items: center;
-  gap: 4px;
+.site-header-nav--drops {
   flex: 1 1 auto;
   justify-content: center;
   min-width: 0;
-  flex-wrap: wrap;
+  gap: 2px;
 }
 
-.mega-tab {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: 6px 11px;
-  border-radius: 6px;
-  font-weight: 600;
-  font-size: 0.86rem;
-  border: 1px solid #e0ddd8;
-  background: #fff;
-  text-decoration: none !important;
-  color: var(--slate) !important;
+.mega-drop {
+  position: relative;
 }
 
-.mega-tab--learn {
-  border-color: rgba(109, 90, 156, 0.35);
-}
-
-.mega-tab--missions {
-  border-color: rgba(94, 112, 85, 0.35);
-}
-
-.mega-tab--challenge {
-  border-color: rgba(198, 122, 62, 0.4);
-}
-
-.mega-tab--board {
-  border-color: rgba(139, 90, 74, 0.35);
-}
-
-.mega-tab:hover {
-  background: #f3f2ef;
-  color: var(--near-black) !important;
-}
-
-.mega-tab.is-active {
-  color: var(--forest) !important;
-  border-color: var(--matcha);
-  background: rgba(143, 168, 136, 0.12);
-}
-
-.mega-panel {
-  background: #fff;
-  border-bottom: 1px solid #d7d4cf;
-}
-
-.mega-panel-inner {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 8px 20px 10px;
-}
-
-.mega-grid {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 8px;
-  align-items: start;
-}
-
-@media (max-width: 900px) {
-  .mega-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-}
-
-@media (max-width: 480px) {
-  .mega-grid {
-    grid-template-columns: 1fr;
-  }
-}
-
-.mega-col {
-  border-radius: 8px;
-  padding: 8px;
-  border: 1px solid #e5e8eb;
-  background: #fafaf9;
-}
-
-.mega-col-head {
-  margin: 0 0 6px;
-  font-size: 0.75rem;
-  font-weight: 700;
-  text-transform: none;
-  color: #555;
-}
-
-.mega-item-list {
-  list-style: none;
+.mega-drop-panel {
+  display: none;
+  position: absolute;
+  top: calc(100% + 1px);
+  left: 0;
+  min-width: 10.5rem;
+  max-width: 15rem;
+  padding: 2px 0;
   margin: 0;
-  padding: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-
-.mega-item-link {
-  display: block;
-  text-decoration: none !important;
-  color: inherit !important;
-  padding: 5px 6px;
-  border-radius: 4px;
   background: #fff;
-  border: 1px solid #eceae7;
+  border: 1px solid #d7d4cf;
+  border-radius: 6px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.07);
+  z-index: 120;
+  flex-direction: column;
 }
 
-.mega-item-link:hover {
-  border-color: #d7d4cf;
-}
-
-.mega-item-title {
+.mega-drop-link {
   display: block;
-  font-weight: 600;
-  font-size: 0.8rem;
-  color: var(--near-black);
+  padding: 4px 12px;
+  font-size: 0.84rem;
+  line-height: 1.3;
+  color: var(--near-black) !important;
+  text-decoration: none !important;
+  white-space: nowrap;
 }
 
-.mega-item-desc {
-  display: block;
-  margin-top: 1px;
-  font-size: 0.72rem;
-  color: var(--slate);
-  line-height: 1.35;
+.mega-drop-link:hover {
+  background: #efefed;
 }
 
 @media (hover: hover) and (pointer: fine) {
-  .site-header--mega .mega-panel {
-    display: none;
-    position: absolute;
-    left: 0;
-    right: 0;
-    top: 100%;
-    z-index: 120;
-    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.06);
-  }
-
-  .mega-hover-area:hover .mega-panel,
-  .mega-hover-area:focus-within .mega-panel {
-    display: block;
+  .mega-drop:hover .mega-drop-panel,
+  .mega-drop:focus-within .mega-drop-panel {
+    display: flex;
   }
 }
 
 @media (hover: none), (pointer: coarse) {
-  .site-header--mega .mega-panel {
-    display: block;
-    position: static;
-    box-shadow: none;
+  .mega-drop.is-open .mega-drop-panel {
+    display: flex;
   }
 }
 
