@@ -70,7 +70,7 @@ export function initMissionPage(queryParams) {
     if (detailRoot) detailRoot.hidden = true;
 
     document.getElementById("bcTitle").textContent = group.title;
-    document.title = `${group.title} · QA Playground`;
+    document.title = `${group.title} · 테스피어-Tespier`;
 
     document.getElementById("hubTitle").textContent = group.title;
     document.getElementById("hubSummary").textContent = group.summary;
@@ -192,7 +192,7 @@ export function initMissionPage(queryParams) {
     document.getElementById("linkSignupGate").href = QA.learnerHref.signup(playNextSingle);
 
     document.getElementById("bcTitle").textContent = mission.title;
-    document.title = `${mission.title} · QA Playground`;
+    document.title = `${mission.title} · 테스피어-Tespier`;
 
     document.getElementById("missionTitle").textContent = mission.title;
     document.getElementById("missionDifficulty").textContent = mission.difficulty;

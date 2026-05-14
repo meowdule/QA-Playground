@@ -1,6 +1,6 @@
 openapi: 3.0.3
 info:
-  title: QA Playground — Mission Catalog API
+  title: 테스피어-Tespier — Mission Catalog API
   description: |
     **정적 OpenAPI 랩.** 실제 런타임은 `js/missions.js` + `mission-catalog-enrich.js`로 카탈로그를 싣습니다.
     이 문서는 동일 도메인 모델을 REST로 노출한다고 가정했을 때의 **계약 예시**입니다. 샌드박스(연습 데모)와는 독립입니다.

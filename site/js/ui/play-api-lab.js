@@ -131,7 +131,7 @@
         <div class="pm-demo-logo">P</div>
         <div class="pm-demo-side-title">Collections</div>
         <div class="pm-demo-tree">
-          <div class="pm-demo-tree-folder is-open">QA Playground</div>
+          <div class="pm-demo-tree-folder is-open">테스피어-Tespier</div>
           <div class="pm-demo-tree-item is-active">Catalog · list</div>
           <div class="pm-demo-tree-item">Catalog · filter</div>
           <div class="pm-demo-tree-item">Catalog · get by id</div>

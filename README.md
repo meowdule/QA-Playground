@@ -1,4 +1,4 @@
-# QA Playground
+# 테스피어-Tespier
 
 GitHub Pages에 올려 두고 쓰기 좋은 **정적 QA 연습 사이트**입니다.  
 브라우저 내 **연습 데모(sandbox)**·미션 카탈로그·Postman/Swagger 스타일 API 랩·Playwright 생성 파이프라인을 포함합니다.

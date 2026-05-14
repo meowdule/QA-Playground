@@ -82,7 +82,7 @@ export function renderSiteChrome() {
   return `
   <header class="site-header">
     <div class="site-header-inner site-header-inner--navrow">
-      <a class="site-logo" href="${h.home()}">QA Playground</a>
+      <a class="site-logo" href="${h.home()}">테스피어-Tespier</a>
       <nav class="site-header-nav site-header-nav--drops" aria-label="주요 메뉴">
         <div class="mega-drop">
           <a class="site-nav-link" data-spa="learn" href="${h.learn()}">학습</a>
@@ -107,7 +107,7 @@ export function renderSiteChrome() {
   <div id="spa-outlet" class="spa-outlet"></div>
   <footer class="site-footer site-footer--service">
     <div class="site-footer-inner">
-      <span class="site-footer-brand">QA Playground</span>
+      <span class="site-footer-brand">테스피어-Tespier</span>
       <nav class="site-footer-nav" aria-label="바로가기">
         <a href="${h.learn()}">학습</a>
         <a href="${h.home()}">미션</a>
@@ -124,7 +124,7 @@ export function renderAuthChrome() {
   return `
   <header class="site-header site-header--auth-only">
     <div class="site-header-inner site-header-inner--center">
-      <a class="site-logo" href="${QA().learnerHref.home()}">QA Playground</a>
+      <a class="site-logo" href="${QA().learnerHref.home()}">테스피어-Tespier</a>
     </div>
   </header>
   <div id="spa-outlet" class="spa-outlet"></div>`;

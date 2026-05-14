@@ -115,5 +115,5 @@ export function initLearnArticlePage(slug) {
 
 export function getLearnArticleTitleForDoc(slug) {
   const a = ARTICLES[slug];
-  return a ? `${a.title} · 학습 · QA Playground` : "학습 · QA Playground";
+  return a ? `${a.title} · 학습 · 테스피어-Tespier` : "학습 · 테스피어-Tespier";
 }

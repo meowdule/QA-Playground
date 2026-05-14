@@ -9,22 +9,22 @@ const TRACK_COPY = {
   theory: {
     title: "이론 챌린지",
     desc: "1과목 대비 안내입니다. 아래는 전체 챌린지 목록이며, 과목별 필터는 카탈로그 메타가 붙으면 연결합니다.",
-    doc: "이론 챌린지 · QA Playground"
+    doc: "이론 챌린지 · 테스피어-Tespier"
   },
   tc: {
     title: "TC 챌린지",
     desc: "2과목 대비 안내입니다. 현재 목록은 전체 챌린지와 동일합니다.",
-    doc: "TC 챌린지 · QA Playground"
+    doc: "TC 챌린지 · 테스피어-Tespier"
   },
   defect: {
     title: "결함 챌린지",
     desc: "3과목 대비 안내입니다. 결함·버그 성격 챌린지를 모을 예정입니다.",
-    doc: "결함 챌린지 · QA Playground"
+    doc: "결함 챌린지 · 테스피어-Tespier"
   },
   mock: {
     title: "모의고사",
     desc: "전과목 시뮬레이션 진입입니다. 현재는 전체 챌린지와 동일한 목록입니다.",
-    doc: "모의고사 · QA Playground"
+    doc: "모의고사 · 테스피어-Tespier"
   }
 };
 
@@ -42,7 +42,7 @@ export function initChallengeListPage(opts) {
     else descEl.innerHTML = DEFAULT_DESC_HTML;
   }
   if (copy) document.title = copy.doc;
-  else document.title = "챌린지 · QA Playground";
+  else document.title = "챌린지 · 테스피어-Tespier";
 
   function escapeHtml(s) {
     return String(s ?? "")

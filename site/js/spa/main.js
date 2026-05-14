@@ -276,15 +276,15 @@ function route() {
     if (!out) return;
     if (p === "/login") {
       out.innerHTML = LOGIN_MARKUP;
-      document.title = "로그인 · QA Playground";
+      document.title = "로그인 · 테스피어-Tespier";
       initLoginPage(query);
     } else if (p === "/signup") {
       out.innerHTML = SIGNUP_MARKUP;
-      document.title = "회원가입 · QA Playground";
+      document.title = "회원가입 · 테스피어-Tespier";
       initSignupPage(query);
     } else {
       out.innerHTML = ACCOUNT_MARKUP;
-      document.title = "계정 정보 · QA Playground";
+      document.title = "계정 정보 · 테스피어-Tespier";
       initAccountPage(query);
     }
     return;
@@ -297,7 +297,7 @@ function route() {
 
   if (p === "/home" || p === "") {
     out.innerHTML = HOME_MARKUP;
-    document.title = "미션 · QA Playground";
+    document.title = "미션 · 테스피어-Tespier";
     setNavActive("missions");
     initHomePage();
     return;
@@ -308,7 +308,7 @@ function route() {
       p === "/learn" ? "" : decodeURIComponent(p.slice("/learn/".length).split("?")[0] || "").trim();
     if (!slug) {
       out.innerHTML = getLearnHubHtml();
-      document.title = "학습 · QA Playground";
+      document.title = "학습 · 테스피어-Tespier";
       setNavActive("learn");
       initLearnHubPage();
       return;
@@ -316,7 +316,7 @@ function route() {
     const article = getLearnArticleHtml(slug);
     if (!article) {
       out.innerHTML = getLearnHubHtml();
-      document.title = "학습 · QA Playground";
+      document.title = "학습 · 테스피어-Tespier";
       setNavActive("learn");
       initLearnHubPage();
       return;
@@ -333,7 +333,7 @@ function route() {
       p === "/board" ? "" : decodeURIComponent(p.slice("/board/".length).split("?")[0] || "").trim();
     if (!slug) {
       out.innerHTML = getBoardHubHtml();
-      document.title = "토론 · QA Playground";
+      document.title = "토론 · 테스피어-Tespier";
       setNavActive("board");
       initBoardHubPage();
       return;
@@ -341,7 +341,7 @@ function route() {
     const topic = getBoardTopicHtml(slug);
     if (!topic) {
       out.innerHTML = getBoardHubHtml();
-      document.title = "토론 · QA Playground";
+      document.title = "토론 · 테스피어-Tespier";
       setNavActive("board");
       initBoardHubPage();
       return;
@@ -362,7 +362,7 @@ function route() {
 
   if (p === "/tc-lab") {
     out.innerHTML = TC_MARKUP;
-    document.title = "TC 작성 실습 · QA Playground";
+    document.title = "TC 작성 실습 · 테스피어-Tespier";
     setNavActive("tc-lab");
     initTcLabPage();
     return;
@@ -380,7 +380,7 @@ function route() {
   }
 
   out.innerHTML = HOME_MARKUP;
-  document.title = "미션 · QA Playground";
+  document.title = "미션 · 테스피어-Tespier";
   setNavActive("missions");
   initHomePage();
 }

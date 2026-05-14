@@ -110,5 +110,5 @@ export function initBoardTopicPage(slug) {
 
 export function getBoardTopicTitleForDoc(slug) {
   const t = TOPICS[slug];
-  return t ? `${t.title} · 토론 · QA Playground` : "토론 · QA Playground";
+  return t ? `${t.title} · 토론 · 테스피어-Tespier` : "토론 · 테스피어-Tespier";
 }

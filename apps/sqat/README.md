@@ -1,7 +1,7 @@
 # SQAT (Software QA Tester) — Next.js 14 앱
 
 스펙 **「SQAT 플랫폼 — Cursor 구현 프롬프트 v2」** Phase 1 골격입니다.  
-기존 정적 **QA Playground**(`site/`)와는 별도 앱으로, `apps/sqat`에서 실행합니다.
+기존 정적 **테스피어-Tespier**(`site/`)와는 별도 앱으로, `apps/sqat`에서 실행합니다.
 
 ## 요구 사항
 
