@@ -5,6 +5,16 @@ GitHub Pages에 올려 두고 쓰기 좋은 **정적 QA 연습 사이트**입니
 
 **배포되는 정적 사이트**는 저장소 루트가 아니라 [`site/`](./site/) 폴더입니다. (GitHub Actions가 `site`만 Pages 아티팩트로 올립니다.)
 
+## SQAT (Next.js) — 별도 앱
+
+프로그래머스형 QA 학습 플랫폼 **SQAT** 스펙(v2) Phase 1 구현은 [`apps/sqat`](./apps/sqat)에 있습니다.
+
+```bash
+cd apps/sqat && npm install && cp .env.example .env && npx prisma migrate dev && npm run dev
+```
+
+자세한 내용은 [`apps/sqat/README.md`](./apps/sqat/README.md)를 참고하세요.
+
 ## 진행 단계
 
 - Phase 1: 카탈로그 분리 (`site/js/missions-seo.js`)
