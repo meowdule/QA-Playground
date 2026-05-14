@@ -1,8 +1,48 @@
 /**
- * 챌린지 목록(#/challenges) — 시나리오 홈과 비슷한 카드 목록.
+ * 챌린지 목록(#/challenges, #/challenges/:track)
+ * — track별 제목·설명만 다르고 목록은 동일(추후 메타 필터 연동).
  */
-export function initChallengeListPage() {
+const DEFAULT_DESC_HTML =
+  "카탈로그에 <code>challenge</code> 가 붙은 시나리오만 모았습니다. 카드를 누르면 확인 후 <strong>바로 플레이(테스트 화면)</strong>로 들어갑니다. 타이머·실점수는 아직 연결되어 있지 않습니다.";
+
+const TRACK_COPY = {
+  theory: {
+    title: "이론 챌린지",
+    desc: "1과목 대비 안내입니다. 아래는 전체 챌린지 목록이며, 과목별 필터는 카탈로그 메타가 붙으면 연결합니다.",
+    doc: "이론 챌린지 · QA Playground"
+  },
+  tc: {
+    title: "TC 챌린지",
+    desc: "2과목 대비 안내입니다. 현재 목록은 전체 챌린지와 동일합니다.",
+    doc: "TC 챌린지 · QA Playground"
+  },
+  defect: {
+    title: "결함 챌린지",
+    desc: "3과목 대비 안내입니다. 결함·버그 성격 챌린지를 모을 예정입니다.",
+    doc: "결함 챌린지 · QA Playground"
+  },
+  mock: {
+    title: "모의고사",
+    desc: "전과목 시뮬레이션 진입입니다. 현재는 전체 챌린지와 동일한 목록입니다.",
+    doc: "모의고사 · QA Playground"
+  }
+};
+
+/** @param {{ track?: string }} [opts] */
+export function initChallengeListPage(opts) {
   const QA = window.QA;
+  const track = (opts && opts.track) || "";
+  const copy = TRACK_COPY[track];
+
+  const titleEl = document.getElementById("challengePageTitle");
+  const descEl = document.getElementById("challengePageDesc");
+  if (titleEl) titleEl.textContent = copy ? copy.title : "챌린지";
+  if (descEl) {
+    if (copy) descEl.textContent = copy.desc;
+    else descEl.innerHTML = DEFAULT_DESC_HTML;
+  }
+  if (copy) document.title = copy.doc;
+  else document.title = "챌린지 · QA Playground";
 
   function escapeHtml(s) {
     return String(s ?? "")
@@ -14,7 +54,11 @@ export function initChallengeListPage() {
 
   const slot = document.getElementById("authNavSlot");
   if (slot && typeof QA.mountAuthNav === "function") {
-    QA.mountAuthNav(slot, { returnPath: QA.learnerHref.challenges() });
+    const ret =
+      track && typeof QA.learnerHref.challengesTrack === "function"
+        ? QA.learnerHref.challengesTrack(track)
+        : QA.learnerHref.challenges();
+    QA.mountAuthNav(slot, { returnPath: ret });
   }
 
   const root = document.getElementById("challengeCatalogRoot");

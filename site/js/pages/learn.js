@@ -1,60 +1,119 @@
-/** 학습 허브: 메가 메뉴·직접 URL의 ?section= 과 연동 */
-const SECTION_IDS = {
-  "qa-concepts": "learn-qa-concepts",
-  "test-techniques": "learn-test-techniques",
-  "defect-mgmt": "learn-defect-mgmt",
-  "report-writing": "learn-report-writing",
-  "sqat-exam": "learn-sqat-exam"
+/** 학습: `/learn` 허브 + `/learn/:slug` 개별 페이지 (미션 홈과 분리) */
+
+const ARTICLES = {
+  concepts: {
+    title: "QA 개념",
+    desc: "용어·역할·품질 목표를 맞추는 단계입니다.",
+    body: `<p class="detail-body">기대 결과·실제 결과·재현 절차를 구분해 말할 수 있으면 이후 미션에서 같은 말이 통합니다.</p>`
+  },
+  techniques: {
+    title: "테스트 기법",
+    desc: "동등분할·경계값 등 입력 공간을 나누는 사고",
+    body: `<p class="detail-body">동등분할·경계값·상태 전이 등으로 케이스를 쪼개는 연습입니다. TC 작성 실습과도 연결됩니다.</p>`
+  },
+  "defect-mgmt": {
+    title: "결함 관리",
+    desc: "심각도·우선순위·재현 정보",
+    body: `<p class="detail-body">심각도·우선순위는 팀 규칙과 사용자 영향도에 따라 달라집니다. <strong>재현 단계·환경</strong>을 빠짐없이 적는 습관을 우선합니다.</p>`
+  },
+  reports: {
+    title: "보고서 작성",
+    desc: "PASS/FAIL·근거 정리",
+    body: `<p class="detail-body">PASS/FAIL·근거 한 줄·확인한 UI 텍스트 인용 등, 나중에 읽는 사람이 따라올 수 있게 쓰는 연습입니다.</p>`
+  },
+  "sqat-exam": {
+    title: "SQAT 시험",
+    desc: "출제 범위 안내",
+    body: `<p class="detail-body">이 연습장 챕터(화면·API·Swagger·TC)와 흐름을 맞춰 두었습니다. 실제 시험 정책은 주관 기관 안내를 따르세요.</p>`
+  }
 };
 
-export function getLearnPageHtml() {
+function esc(s) {
+  return String(s ?? "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;");
+}
+
+export function getLearnHubHtml() {
   const h = window.QA.learnerHref;
+  const items = [
+    ["concepts", "QA 개념", "용어 / 이론"],
+    ["techniques", "테스트 기법", "동등분할 등"],
+    ["defect-mgmt", "결함 관리", "심각도 기준"],
+    ["reports", "보고서 작성", "PASS/FAIL 기준"],
+    ["sqat-exam", "SQAT 시험", "출제 범위 안내"]
+  ];
+  const cards = items
+    .map(
+      ([slug, t, d]) => `
+      <li>
+        <a class="course-card course-card--feature" href="${h.learnArticle(slug)}" style="text-decoration:none;color:inherit;">
+          <h3 class="course-title"><span class="course-title-text">${esc(t)}</span></h3>
+          <p class="course-desc">${esc(d)}</p>
+          <span class="course-more">학습 페이지 →</span>
+        </a>
+      </li>`
+    )
+    .join("");
   return `
   <section class="site-hero">
     <div class="site-hero-inner">
       <h1 class="site-hero-title">학습</h1>
-      <p class="site-hero-desc">
-        QA·테스트·결함·보고·시험 범위를 한 페이지에서 훑을 수 있습니다. 상단 <strong>메가 메뉴</strong>의 항목과 같은 앵커로 연결됩니다.
-      </p>
+      <p class="site-hero-desc">미션·챌린지와 별도의 <strong>학습 전용</strong> 페이지입니다. 항목마다 독립 URL로 들어옵니다.</p>
     </div>
   </section>
   <main class="site-main">
-    <div class="site-container site-main-narrow learn-hub">
-      <article id="learn-qa-concepts" class="learn-section detail-card">
-        <h2 class="detail-h2">QA 개념</h2>
-        <p class="detail-body">용어·역할·품질 목표를 맞추는 단계입니다. 기대 결과·실제 결과·재현 절차를 구분해 말할 수 있으면 이후 미션에서 같은 말이 통합니다.</p>
-        <p class="muted small"><a class="inline-link" href="${h.home()}">미션(시나리오)으로 연습 →</a></p>
-      </article>
-      <article id="learn-test-techniques" class="learn-section detail-card">
-        <h2 class="detail-h2">테스트 기법</h2>
-        <p class="detail-body">동등분할·경계값·상태 전이 등으로 입력 공간을 나누는 사고를 합니다. TC 작성 메뉴의 과정에서도 같은 관점으로 케이스를 쪼개 보세요.</p>
-        <p class="muted small"><a class="inline-link" href="${h.tcLab()}">TC 작성 실습 →</a></p>
-      </article>
-      <article id="learn-defect-mgmt" class="learn-section detail-card">
-        <h2 class="detail-h2">결함 관리</h2>
-        <p class="detail-body">심각도·우선순위는 팀 규칙과 사용자 영향도에 따라 달라집니다. 데모에서는 <strong>재현 단계·환경·첨부</strong>를 빠짐없이 적는 연습을 우선합니다.</p>
-        <p class="muted small"><a class="inline-link" href="${h.boardQuery("severity")}">토론(심각도) 샘플 →</a></p>
-      </article>
-      <article id="learn-report-writing" class="learn-section detail-card">
-        <h2 class="detail-h2">보고서 작성</h2>
-        <p class="detail-body">PASS/FAIL·근거 한 줄·스크린 대신 확인한 UI 텍스트 인용 등, 나중에 읽는 사람이 따라올 수 있게 쓰는 연습입니다.</p>
-      </article>
-      <article id="learn-sqat-exam" class="learn-section detail-card">
-        <h2 class="detail-h2">SQAT 시험</h2>
-        <p class="detail-body">출제 범위는 이 연습장의 챕터(화면·API·Swagger·TC)와 맞춰 두었습니다. 실제 시험 정책은 주관 기관 안내를 따르세요.</p>
-        <p class="muted small"><a class="inline-link" href="${h.challenges()}">챌린지(심화) →</a></p>
+    <div class="site-container site-main-narrow">
+      <ul class="learn-hub-list" style="list-style:none;margin:0;padding:0;display:grid;gap:12px;">
+        ${cards}
+      </ul>
+    </div>
+  </main>`;
+}
+
+export function getLearnArticleHtml(slug) {
+  const h = window.QA.learnerHref;
+  const art = ARTICLES[slug];
+  if (!art) return null;
+  return `
+  <section class="site-hero">
+    <div class="site-hero-inner">
+      <p class="muted small" style="margin:0 0 6px;"><a class="inline-link" href="${h.learn()}">← 학습 목록</a></p>
+      <h1 class="site-hero-title">${esc(art.title)}</h1>
+      <p class="site-hero-desc">${esc(art.desc)}</p>
+    </div>
+  </section>
+  <main class="site-main">
+    <div class="site-container site-main-narrow">
+      <article class="detail-card">${art.body}
+        <p class="muted small" style="margin-top:1rem;">
+          <a class="inline-link" href="${h.home()}">미션</a> · <a class="inline-link" href="${h.tcLab()}">TC 작성</a>
+          ${slug === "defect-mgmt" ? ` · <a class="inline-link" href="${h.boardTopic("severity")}">토론 · 심각도</a>` : ""}
+        </p>
       </article>
     </div>
   </main>`;
 }
 
-export function initLearnPage() {
-  const params = window.QA.learnerAppSearchParams();
-  const section = params.get("section");
-  const id = section && SECTION_IDS[section];
-  if (!id) return;
-  requestAnimationFrame(() => {
-    const el = document.getElementById(id);
-    if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
-  });
+export function initLearnHubPage() {
+  const QA = window.QA;
+  const slot = document.getElementById("authNavSlot");
+  if (slot && typeof QA.mountAuthNav === "function") {
+    QA.mountAuthNav(slot, { returnPath: QA.learnerHref.learn() });
+  }
+}
+
+export function initLearnArticlePage(slug) {
+  const QA = window.QA;
+  const slot = document.getElementById("authNavSlot");
+  if (slot && typeof QA.mountAuthNav === "function") {
+    QA.mountAuthNav(slot, { returnPath: QA.learnerHref.learnArticle(slug) });
+  }
+}
+
+export function getLearnArticleTitleForDoc(slug) {
+  const a = ARTICLES[slug];
+  return a ? `${a.title} · 학습 · QA Playground` : "학습 · QA Playground";
 }

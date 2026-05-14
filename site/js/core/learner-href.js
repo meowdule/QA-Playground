@@ -20,20 +20,32 @@
     learn() {
       return "./index.html#/learn";
     },
-    learnQuery(section) {
-      return section ? `./index.html#/learn?section=${encodeURIComponent(section)}` : this.learn();
+    /** 학습 개별 페이지: #/learn/concepts */
+    learnArticle(slug) {
+      const s = String(slug || "").trim();
+      if (!s) return this.learn();
+      return `./index.html#/learn/${encodeURIComponent(s)}`;
     },
     board() {
       return "./index.html#/board";
     },
-    boardQuery(topic) {
-      return topic ? `./index.html#/board?topic=${encodeURIComponent(topic)}` : this.board();
+    /** 토론 개별 페이지: #/board/severity */
+    boardTopic(slug) {
+      const s = String(slug || "").trim();
+      if (!s) return this.board();
+      return `./index.html#/board/${encodeURIComponent(s)}`;
     },
     tcLab() {
       return "./index.html#/tc-lab";
     },
     challenges() {
       return "./index.html#/challenges";
+    },
+    /** 챌린지 구분(추후 필터 연동): #/challenges/theory */
+    challengesTrack(track) {
+      const t = String(track || "").trim();
+      if (!t) return this.challenges();
+      return `./index.html#/challenges/${encodeURIComponent(t)}`;
     },
     mission(missionId, opts) {
       const q = new URLSearchParams({ m: missionId });

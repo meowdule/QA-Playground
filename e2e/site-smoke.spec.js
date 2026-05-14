@@ -5,9 +5,7 @@ test.describe("static site", () => {
     await page.goto("/");
     await expect(page).toHaveTitle(/QA Playground/i);
     await expect(page.getByRole("link", { name: "QA Playground" }).first()).toBeVisible();
-    await expect(page.getByRole("navigation", { name: "주요 페이지" })).toBeVisible();
-    await expect(
-      page.getByRole("navigation", { name: "주요 페이지" }).getByRole("link", { name: "시나리오 실습" })
-    ).toBeVisible();
+    await expect(page.getByRole("navigation", { name: "주요 메뉴" })).toBeVisible();
+    await expect(page.getByRole("navigation", { name: "주요 메뉴" }).getByRole("link", { name: "미션" })).toBeVisible();
   });
 });

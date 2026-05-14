@@ -13,8 +13,20 @@ import { initHomePage } from "../pages/home.js";
 import { initMissionPage } from "../pages/mission-detail.js";
 import { initTcLabPage } from "../pages/tc-lab.js";
 import { initChallengeListPage } from "../pages/challenge-list.js";
-import { initLearnPage, getLearnPageHtml } from "../pages/learn.js";
-import { initBoardPage, getBoardPageHtml } from "../pages/board.js";
+import {
+  initLearnHubPage,
+  initLearnArticlePage,
+  getLearnHubHtml,
+  getLearnArticleHtml,
+  getLearnArticleTitleForDoc
+} from "../pages/learn.js";
+import {
+  initBoardHubPage,
+  initBoardTopicPage,
+  getBoardHubHtml,
+  getBoardTopicHtml,
+  getBoardTopicTitleForDoc
+} from "../pages/board.js";
 import { initLoginPage } from "../pages/login.js";
 import { initSignupPage } from "../pages/signup.js";
 import { initAccountPage } from "../pages/account.js";
@@ -157,8 +169,8 @@ const TC_MARKUP = `
 const CHALLENGE_MARKUP = `
   <section class="site-hero">
     <div class="site-hero-inner">
-      <h1 class="site-hero-title">챌린지</h1>
-      <p class="site-hero-desc">
+      <h1 class="site-hero-title" id="challengePageTitle">챌린지</h1>
+      <p class="site-hero-desc" id="challengePageDesc">
         카탈로그에 <code>challenge</code> 가 붙은 시나리오만 모았습니다. 카드를 누르면 확인 후 <strong>바로 플레이(테스트 화면)</strong>로
         들어갑니다. 타이머·실점수는 아직 연결되어 있지 않습니다.
       </p>
@@ -290,19 +302,53 @@ function route() {
     return;
   }
 
-  if (p === "/learn") {
-    out.innerHTML = getLearnPageHtml();
-    document.title = "학습 · QA Playground";
+  if (p === "/learn" || p.startsWith("/learn/")) {
+    const slug =
+      p === "/learn" ? "" : decodeURIComponent(p.slice("/learn/".length).split("?")[0] || "").trim();
+    if (!slug) {
+      out.innerHTML = getLearnHubHtml();
+      document.title = "학습 · QA Playground";
+      setNavActive("learn");
+      initLearnHubPage();
+      return;
+    }
+    const article = getLearnArticleHtml(slug);
+    if (!article) {
+      out.innerHTML = getLearnHubHtml();
+      document.title = "학습 · QA Playground";
+      setNavActive("learn");
+      initLearnHubPage();
+      return;
+    }
+    out.innerHTML = article;
+    document.title = getLearnArticleTitleForDoc(slug);
     setNavActive("learn");
-    initLearnPage();
+    initLearnArticlePage(slug);
     return;
   }
 
-  if (p === "/board") {
-    out.innerHTML = getBoardPageHtml();
-    document.title = "토론 · QA Playground";
+  if (p === "/board" || p.startsWith("/board/")) {
+    const slug =
+      p === "/board" ? "" : decodeURIComponent(p.slice("/board/".length).split("?")[0] || "").trim();
+    if (!slug) {
+      out.innerHTML = getBoardHubHtml();
+      document.title = "토론 · QA Playground";
+      setNavActive("board");
+      initBoardHubPage();
+      return;
+    }
+    const topic = getBoardTopicHtml(slug);
+    if (!topic) {
+      out.innerHTML = getBoardHubHtml();
+      document.title = "토론 · QA Playground";
+      setNavActive("board");
+      initBoardHubPage();
+      return;
+    }
+    out.innerHTML = topic;
+    document.title = getBoardTopicTitleForDoc(slug);
     setNavActive("board");
-    initBoardPage();
+    initBoardTopicPage(slug);
     return;
   }
 
@@ -321,11 +367,14 @@ function route() {
     return;
   }
 
-  if (p === "/challenges") {
+  if (p === "/challenges" || p.startsWith("/challenges/")) {
+    const KNOWN = new Set(["theory", "tc", "defect", "mock"]);
+    const raw =
+      p === "/challenges" ? "" : decodeURIComponent(p.slice("/challenges/".length).split("?")[0] || "").trim();
+    const track = raw && KNOWN.has(raw) ? raw : "";
     out.innerHTML = CHALLENGE_MARKUP;
-    document.title = "챌린지 · QA Playground";
     setNavActive("challenges");
-    initChallengeListPage();
+    initChallengeListPage({ track });
     return;
   }
 
